@@ -10,6 +10,7 @@ class TestProjectCrudTests(BaseTestClass):
         description = "This is the first test project"
         body = super().entities.get_project_create_body(project_name=name, description=description)
         project = super().rest_requests.create_project(body=body)
+        assert project is not None
         assert project['name'] == name
         assert project['identifier'] == name
 
@@ -21,6 +22,7 @@ class TestProjectCrudTests(BaseTestClass):
         description = project['description']['raw']
 
         project = super().rest_requests.get_single_project(id=project['id'])
+        assert project is not None
         assert project['name'] == name
         assert project['description']['raw'] == description
 
@@ -30,6 +32,7 @@ class TestProjectCrudTests(BaseTestClass):
         description = "Updated description"
         body = super().entities.get_project_update_body(description=description)
         project = super().rest_requests.update_project(id=project['id'], body=body)
+        assert project is not None
         assert project['description']['raw'] == description
 
     def test_delete_project(self):
@@ -40,6 +43,7 @@ class TestProjectCrudTests(BaseTestClass):
 
         project = super().rest_requests.get_single_project(id=project['id'], expected_status=HTTPStatus.NOT_FOUND,
                                                            attempts=5)
+        assert project is not None
         assert project == {}
 
 
@@ -54,6 +58,7 @@ class TestWorkPkgTest(BaseTestClass):
                                                              project_ref=project['_links']['self']['href'],
                                                              pkg_type="/api/v3/types/1")
         pkg = super().rest_requests.create_work_package(body=body)
+        assert pkg is not None
         assert pkg['subject'] == pkg_name
 
         return pkg
@@ -63,6 +68,7 @@ class TestWorkPkgTest(BaseTestClass):
         pkg_name = pkg['subject']
 
         pkg = super().rest_requests.get_work_package(id=pkg['id'])
+        assert pkg is not None
         assert pkg['_links']['type']['title'] == 'Task'
         assert pkg['subject'] == pkg_name
 
@@ -73,6 +79,7 @@ class TestWorkPkgTest(BaseTestClass):
         package_description = "Package description updated"
         body = super().entities.get_work_package_update_body(lock_version=lock_version, description=package_description)
         pkg = super().rest_requests.update_work_package(id=pkg['id'], body=body)
+        assert pkg is not None
         assert pkg['description']['raw'] == package_description
 
     def test_delete_work_package(self):
@@ -82,7 +89,9 @@ class TestWorkPkgTest(BaseTestClass):
         assert status == HTTPStatus.NO_CONTENT
 
         pkg = super().rest_requests.get_work_package(id=pkg['id'])
+        assert pkg is not None
         assert pkg == {}
+
 
 tests = TestWorkPkgTest()
 tests.test_update_work_package()
