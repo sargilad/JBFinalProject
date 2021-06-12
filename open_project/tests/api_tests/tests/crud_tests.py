@@ -1,11 +1,10 @@
 import json
 from http import HTTPStatus
-from open_project.tests.base_test import BaseTestClass
+from open_project.tests.api_tests.tests.api_base_test import BaseApiTestClass
 
 
-class TestProjectCrudTests(BaseTestClass):
+class TestProjectCrudTests(BaseApiTestClass):
     def test_create_project(self) -> json:
-        # create project
         name = super().common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
         body = super().entities.get_project_create_body(project_name=name, description=description)
@@ -47,7 +46,7 @@ class TestProjectCrudTests(BaseTestClass):
         assert project == {}
 
 
-class TestWorkPkgTest(BaseTestClass):
+class TestWorkPkgTest(BaseApiTestClass):
     test_project_crud_tests = TestProjectCrudTests()
 
     def test_create_work_package(self) -> json:
