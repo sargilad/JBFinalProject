@@ -6,12 +6,12 @@ from open_project.tests.base_test import BaseTestClass
 class TestProjectCrudTests(BaseTestClass):
     def test_create_project(self) -> json:
         # create project
-        name = super().common_utilities.get_random_string(prefix="proj_")
+        name = super().common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
         body = super().entities.get_project_create_body(project_name=name, description=description)
         project = super().rest_requests.create_project(body=body)
         assert project['name'] == name
-        # assert project['identifier'] == name #todo fix
+        assert project['identifier'] == name
 
         return project
 
