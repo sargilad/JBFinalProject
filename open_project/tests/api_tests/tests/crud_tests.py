@@ -3,13 +3,13 @@ from http import HTTPStatus
 from open_project.tests.base_test import BaseTestClass
 
 
-class TestCrudTests(BaseTestClass):
+class TestProjectCrudTests(BaseTestClass):
     def test_create_project(self) -> json:
         # create project
         name = super().common_utilities.get_random_string(prefix="proj_")
         description = "This is the first test project"
         body = super().entities.get_project_create_body(project_name=name, description=description)
-        project = super().rest_requests.create_project(body)
+        project = super().rest_requests.create_project(body=body)
         assert project['name'] == name
         # assert project['identifier'] == name #todo fix
 
@@ -29,7 +29,7 @@ class TestCrudTests(BaseTestClass):
 
         description = "Updated description"
         body = super().entities.get_project_update_body(description=description)
-        project = super().rest_requests.update_project(project['id'], body)
+        project = super().rest_requests.update_project(id=project['id'], body=body)
         assert project['description']['raw'] == description
 
     def test_delete_project(self):
@@ -42,8 +42,12 @@ class TestCrudTests(BaseTestClass):
                                                            attempts=5)
         assert project == {}
 
+
+class TestWorkPkgTest(BaseTestClass):
+    test_project_crud_tests = TestProjectCrudTests()
+
     def test_create_work_package(self) -> json:
-        project = self.test_create_project()
+        project = self.test_project_crud_tests.test_create_project()
 
         pkg_name = super().common_utilities.get_random_string(prefix="pkg_")
         body = super().entities.get_create_work_package_body(pkg_name=pkg_name,
@@ -80,6 +84,5 @@ class TestCrudTests(BaseTestClass):
         pkg = super().rest_requests.get_work_package(id=pkg['id'])
         assert pkg == {}
 
-
-tests = TestCrudTests()
-tests.test_create_project()
+tests = TestWorkPkgTest()
+tests.test_update_work_package()
