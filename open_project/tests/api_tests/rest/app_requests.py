@@ -26,9 +26,9 @@ class RestRequests:
             if response.status_code == HTTPStatus.CREATED:
                 print(f"project CREATE: {response.json()}")
                 return response.json()
+            raise Exception("Failed to CREATE project")
         except Exception as e:
             print(e)
-            return None
 
     def get_single_project(self, id: int, expected_status: int = HTTPStatus.OK, attempts: int = 1) -> json:
         try:
@@ -50,6 +50,7 @@ class RestRequests:
             elif response.status_code == HTTPStatus.NOT_FOUND:
                 print(f"Project id {id} not found")
                 return {}
+            raise Exception("Failed to GET project")
         except Exception as e:
             print(e)
             return None
@@ -61,6 +62,7 @@ class RestRequests:
             if response.status_code == HTTPStatus.OK:
                 print(f"project PATCH: {response.json()}")
                 return response.json()
+            raise Exception("Failed to UPDATE project")
         except Exception as e:
             print(e)
             return None
@@ -72,6 +74,7 @@ class RestRequests:
             if response.status_code == HTTPStatus.NO_CONTENT:
                 print(f"project deleted")
                 return HTTPStatus.NO_CONTENT
+            raise Exception("Failed to DELETE project")
         except Exception as e:
             print(e)
             return HTTPStatus.EXPECTATION_FAILED
@@ -83,6 +86,7 @@ class RestRequests:
             if response.status_code == HTTPStatus.CREATED:
                 print(f"package CREATE: {response.json()}")
                 return response.json()
+            raise Exception("Failed to CREATE package")
         except Exception as e:
             print(e)
             return None
@@ -96,6 +100,7 @@ class RestRequests:
             elif response.status_code == HTTPStatus.NOT_FOUND:
                 print(f"package id {id} not found")
                 return {}
+            raise Exception("Failed to GET package")
         except Exception as e:
             print(e)
             return None  # might cause NPE
@@ -107,6 +112,7 @@ class RestRequests:
             if response.status_code == HTTPStatus.OK:
                 print(f"package PATCH: {response.json()}")
                 return response.json()
+            raise Exception("Failed to UPDATE package")
         except Exception as e:
             print(e)
             return None
@@ -118,6 +124,7 @@ class RestRequests:
             if response.status_code == HTTPStatus.NO_CONTENT:
                 print(f"Work package deleted")
                 return HTTPStatus.NO_CONTENT
+            raise Exception("Failed to DELETE package")
         except Exception as e:
             print(e)
             return HTTPStatus.EXPECTATION_FAILED
