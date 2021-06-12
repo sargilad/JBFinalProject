@@ -2,12 +2,12 @@ import configparser
 import time
 from http import HTTPStatus
 
-from app_requests import RestRequests
-from rest_entities import OpenProjectEntities
-from utilities import CommonUtilities
+from open_project.tests.api_tests.rest.app_requests import RestRequests
+from open_project.tests.api_tests.rest.rest_entities import OpenProjectEntities
+from open_project.tests.api_tests.utilities.utilities import CommonUtilities
 
 config_parser = configparser.ConfigParser()
-config_parser.read('config.ini')
+config_parser.read('../env/config.ini')
 questions_sections_list = config_parser.sections()
 
 domain = config_parser['env']['domain']

@@ -2,8 +2,9 @@ import time
 from enum import Enum
 from http import HTTPStatus
 
-from api_factory import RestClient
 import json
+
+from open_project.tests.api_tests.rest.client import RestClient
 
 
 class RestRequests:
