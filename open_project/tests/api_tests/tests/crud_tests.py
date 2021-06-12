@@ -1,6 +1,6 @@
 import json
 from http import HTTPStatus
-from open_project.tests.api_tests.tests.base_test import BaseTestClass
+from open_project.tests.base_test import BaseTestClass
 
 
 class TestCrudTests(BaseTestClass):
