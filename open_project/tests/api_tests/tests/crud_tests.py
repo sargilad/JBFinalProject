@@ -1,8 +1,11 @@
 import json
 from http import HTTPStatus
+import pytest
+
 from open_project.tests.api_tests.tests.api_base_test import BaseApiTestClass
 
 
+@pytest.mark.proj_sanity
 class TestProjectCrudTests(BaseApiTestClass):
     def test_create_project(self) -> json:
         name = super().common_utilities.get_random_string(prefix="proj-")
@@ -46,6 +49,7 @@ class TestProjectCrudTests(BaseApiTestClass):
         assert project == {}
 
 
+@pytest.mark.workpkg_sanity
 class TestWorkPkgTest(BaseApiTestClass):
     test_project_crud_tests = TestProjectCrudTests()
 
@@ -90,7 +94,3 @@ class TestWorkPkgTest(BaseApiTestClass):
         pkg = super().rest_requests.get_work_package(id=pkg['id'])
         assert pkg is not None
         assert pkg == {}
-
-
-tests = TestWorkPkgTest()
-tests.test_update_work_package()
