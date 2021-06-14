@@ -22,4 +22,7 @@ class MyPagePageObject(BasePageObject):
         locator = self.my_page_page.button_add_locator
         self.button_wrapper.wait_for_element(locator)
 
-    # def open
+    def open_new_project_page(self):
+        pass
+        #todo cont. from here
+

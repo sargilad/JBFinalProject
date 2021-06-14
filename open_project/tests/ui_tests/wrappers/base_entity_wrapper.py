@@ -15,7 +15,7 @@ class BaseWrapper:
         self.driver = driver
         self.driver_wait = driver_wait
 
-    def get_element(self, by: By) -> WebElement:
+    def get_element(self, by: tuple) -> WebElement:
         try:
             return self.driver.find_element(*by)
         except NoSuchElementException as e:
