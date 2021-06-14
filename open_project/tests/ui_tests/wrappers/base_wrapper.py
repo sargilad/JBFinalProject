@@ -1,4 +1,5 @@
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException, \
+    StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium import webdriver
@@ -30,4 +31,8 @@ class BaseWrapper:
         try:
             element.click()
         except ElementNotVisibleException as enve:
-            return None
+            print(enve)
+        except StaleElementReferenceException as ser:
+            print(ser)
+        except Exception as e:
+            print(e)
