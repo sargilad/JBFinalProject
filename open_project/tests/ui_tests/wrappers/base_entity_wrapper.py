@@ -21,9 +21,9 @@ class BaseWrapper:
         except NoSuchElementException as e:
             return None
 
-    def wait_for_element(self, by: By, value: str):
+    def wait_for_element(self, by: By):
         try:
-            self.driver_wait.until(method=EC.presence_of_element_located((by, value)))
+            self.driver_wait.until(method=EC.presence_of_element_located(by))
         except TimeoutException as toe:
             return None
 

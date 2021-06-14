@@ -16,4 +16,4 @@ class LoginPage(BasePage):
         return self.text_box_wrapper.get_element(self.textBox_password_locator)
 
     def button_sign_in_element(self) -> WebElement:
-        return self.text_box_wrapper.get_element(self.button_sign_in_locator)
+        return self.button_wrapper.get_element(self.button_sign_in_locator)

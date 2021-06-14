@@ -1,7 +1,7 @@
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.remote.webelement import WebElement
 
-from open_project.tests.ui_tests.wrappers.base_wrapper import BaseWrapper
+from open_project.tests.ui_tests.wrappers.base_entity_wrapper import BaseWrapper
 
 
 class TextBoxWrapper(BaseWrapper):
