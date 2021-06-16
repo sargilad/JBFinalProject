@@ -14,17 +14,16 @@ class OpenProjectSanityTests(BaseUITestClass):
         self.my_page_page_object = MyPagePageObject(self.driver, self.driver_wait)
 
     def test_login(self):
-        #login page
+        # login page
         self.login_page_object.goto_page(self.domain)
         self.login_page_object.fill_login_page(username=self.username, password=self.password)
         self.login_page_object.submit_form()
 
         # My page
         self.my_page_page_object.wait_for_page_to_load()
-
-
-
-
+        self.my_page_page_object.open_new_project_page()
+        # self.my_page_page_object.fill_new_project_data()
+        # self.my_page_page_object.submit_form()
 
 
 test = OpenProjectSanityTests()
