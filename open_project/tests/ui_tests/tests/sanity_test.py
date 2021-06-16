@@ -16,17 +16,14 @@ class OpenProjectSanityTests(BaseUITestClass):
         self.my_page_page_object = MyPagePageObject(driver=self.driver,driver_wait= self.driver_wait)
         self.new_project_page_object = NewProjectPageObject(driver=self.driver,driver_wait= self.driver_wait)
 
-    def test_login(self):
+    def test_create_project_sanity(self):
         # login page
         self.login_page_object.goto_page(domain=self.domain)
         self.login_page_object.fill_login_page(username=self.username, password=self.password)
         self.login_page_object.submit_form()
-        # todo add wait
 
         # Home page
-        self.my_page_page_object.wait_for_page_to_load()
         self.my_page_page_object.open_new_project_page()
-        # todo add wait
 
         # Add New project
         proj_name = self.common_utilities.get_random_string(prefix="proj-")
@@ -37,4 +34,4 @@ class OpenProjectSanityTests(BaseUITestClass):
 
 
 test = OpenProjectSanityTests()
-test.test_login()
+test.test_create_project_sanity()

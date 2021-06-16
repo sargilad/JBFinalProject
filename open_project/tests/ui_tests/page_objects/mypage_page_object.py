@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 from open_project.tests.ui_tests.page_objects.base_page_object import BasePageObject
@@ -21,10 +20,6 @@ class MyPagePageObject(BasePageObject):
         self.text_box_wrapper = TextBoxWrapper(driver, driver_wait)
         self.button_wrapper = ButtonWrapper(driver, driver_wait)
         self.list_wrapper = ListWrapper(driver, driver_wait)
-
-    def wait_for_page_to_load(self):
-        locator = self.my_page_page.button_add_locator
-        self.button_wrapper.wait_for_element(locator)
 
     def open_new_project_page(self):
         self.button_wrapper.wait_for_element(self.my_page_page.button_add_locator)
