@@ -30,3 +30,8 @@ class MyPagePageObject(BasePageObject):
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
                                                             locator=self.my_page_page.by_list_tag_locator,
                                                             text_to_search="Project").click()
+
+    def get_project_name_from_drop_down(self) -> str:
+        self.button_wrapper.wait_for_element(self.my_page_page.drop_down_projects_list_locator)
+        element = self.my_page_page.drop_down_projects_list_element()
+        return element.text
