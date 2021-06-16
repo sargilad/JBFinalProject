@@ -1,8 +1,8 @@
 import configparser
+
 from open_project.tests.api_tests.rest.app_requests import RestRequests
 from open_project.tests.api_tests.rest.rest_entities import OpenProjectEntities
 from open_project.tests.api_tests.utilities.utilities import CommonUtilities
-from selenium import webdriver
 
 
 class BaseApiTestClass:
