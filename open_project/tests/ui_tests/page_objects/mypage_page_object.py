@@ -27,10 +27,11 @@ class MyPagePageObject(BasePageObject):
         self.button_wrapper.wait_for_element(locator)
 
     def open_new_project_page(self):
+        self.button_wrapper.wait_for_element(self.my_page_page.button_add_locator)
         element = self.my_page_page.button_add_element()
-        self.button_wrapper.click_on_element(element)
+        self.button_wrapper.click_on_element(button_element=element)
 
         list_element = self.my_page_page.list_app_menu_element()
-        self.list_wrapper.get_element_from_list_base_entity(base_entity=list_element,
+        self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
                                                             locator=self.my_page_page.by_list_tag_locator,
                                                             text_to_search="Project").click()

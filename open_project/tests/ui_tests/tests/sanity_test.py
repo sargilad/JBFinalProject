@@ -12,13 +12,13 @@ class OpenProjectSanityTests(BaseUITestClass):
     def __init__(self):
         super().__init__()
 
-        self.login_page_object = LoginPageObject(self.driver, self.driver_wait)
-        self.my_page_page_object = MyPagePageObject(self.driver, self.driver_wait)
-        self.new_project_page_object = NewProjectPageObject(self.driver, self.driver_wait)
+        self.login_page_object = LoginPageObject(driver=self.driver,driver_wait= self.driver_wait)
+        self.my_page_page_object = MyPagePageObject(driver=self.driver,driver_wait= self.driver_wait)
+        self.new_project_page_object = NewProjectPageObject(driver=self.driver,driver_wait= self.driver_wait)
 
     def test_login(self):
         # login page
-        self.login_page_object.goto_page(self.domain)
+        self.login_page_object.goto_page(domain=self.domain)
         self.login_page_object.fill_login_page(username=self.username, password=self.password)
         self.login_page_object.submit_form()
         # todo add wait
@@ -29,7 +29,10 @@ class OpenProjectSanityTests(BaseUITestClass):
         # todo add wait
 
         # Add New project
-        self.new_project_page_object.fill_project_data()  # todo optional send data to class
+        proj_name = self.common_utilities.get_random_string(prefix="proj-")
+        proj_description = self.common_utilities.get_random_string(str_length=50)
+        self.new_project_page_object.fill_project_data(project_name=proj_name,
+                                                       description=proj_description)
         self.new_project_page_object.submit_new_project()
 
 

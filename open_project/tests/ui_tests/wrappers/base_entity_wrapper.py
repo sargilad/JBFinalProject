@@ -25,11 +25,12 @@ class BaseWrapper:
         try:
             self.driver_wait.until(method=EC.presence_of_element_located(by))
         except TimeoutException as toe:
+            print(toe)
             return None
 
-    def click_on_element(self, element: WebElement):
+    def click_on_element(self, button_element: WebElement):
         try:
-            element.click()
+            button_element.click()
         except ElementNotVisibleException as enve:
             print(enve)
         except StaleElementReferenceException as ser:

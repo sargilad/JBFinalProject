@@ -13,9 +13,9 @@ class ListWrapper(BaseWrapper):
                 return element
         return None
 
-    def get_element_from_list_base_entity(self, base_entity: WebElement, locator: tuple,
+    def get_element_from_list_base_entity(self, parent_element: WebElement, locator: tuple,
                                           text_to_search: str) -> WebElement:
-        element_list = base_entity.find_elements(*locator)
+        element_list = parent_element.find_elements(*locator)
         for element in element_list:
             element_text = element.text
             if text_to_search in element_text:
