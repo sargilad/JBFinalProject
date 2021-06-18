@@ -3,7 +3,9 @@ import pytest
 from open_project.tests.ui_tests.page_objects.login_page_object import LoginPageObject
 from open_project.tests.ui_tests.page_objects.mypage_page_object import MyPagePageObject
 from open_project.tests.ui_tests.page_objects.new_project_page_object import NewProjectPageObject
+from open_project.tests.ui_tests.page_objects.new_work_package_page_object import NewWorkPackagePageObject
 from open_project.tests.ui_tests.page_objects.project_page_object import ProjectPageObject
+from open_project.tests.ui_tests.page_objects.work_package_page_object import WorkPackagesPageObject
 from open_project.tests.ui_tests.tests.ui_base_test import BaseUITestClass
 
 
@@ -13,6 +15,8 @@ class TestOpenProjectSanityTests(BaseUITestClass):
     my_page_page_object: MyPagePageObject
     new_project_page_object: NewProjectPageObject
     project_page_object: ProjectPageObject
+    work_packages_page_object: WorkPackagesPageObject
+    new_work_package_page_object: NewWorkPackagePageObject
 
     def __init__(self):
         super().__init__()
@@ -21,6 +25,8 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         self.my_page_page_object = MyPagePageObject(driver=self.driver, driver_wait=self.driver_wait)
         self.new_project_page_object = NewProjectPageObject(driver=self.driver, driver_wait=self.driver_wait)
         self.project_page_object = ProjectPageObject(driver=self.driver, driver_wait=self.driver_wait)
+        self.work_packages_page_object = WorkPackagesPageObject(driver=self.driver, driver_wait=self.driver_wait)
+        self.new_work_package_page_object = NewWorkPackagePageObject(driver=self.driver, driver_wait=self.driver_wait)
 
     def test_create_project_sanity(self) -> str:
         # login page
@@ -52,17 +58,20 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         project_name = self.project_page_object.get_project_name()
         self.my_page_page_object.select_project_from_list(project_name)
 
-        # select work packages
+        self.project_page_object.select_from_root_menu("Work packages")
 
         # Get and save the row # in table
 
         # click new task
+        self.work_packages_page_object.open_new_work_page()
 
         # verify new task header as validation
 
         # fill subject and description
+        self.new_work_package_page_object.fill_new_package_data("pkg1", "Package description")
 
         # click save
+        self.new_work_package_page_object.submit_new_package()
 
         # Verify rows # incremented by 1
 
@@ -71,3 +80,4 @@ class TestOpenProjectSanityTests(BaseUITestClass):
 
 test = TestOpenProjectSanityTests()
 test.test_create_work_package_sanity()
+print("done")

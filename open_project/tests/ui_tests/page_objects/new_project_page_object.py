@@ -23,29 +23,29 @@ class NewProjectPageObject(BasePageObject):
         self.list_wrapper = ListWrapper(driver, driver_wait)
 
     def fill_project_data(self, project_name: str, description: str = "Description"):
-        self.text_box_wrapper.wait_for_element(self.new_project_page.textBox_name_locator)
+        self.text_box_wrapper.wait_for_element_presence(self.new_project_page.textBox_name_locator)
         element = self.new_project_page.textbox_username_element()
         self.text_box_wrapper.send_keys(web_element=element, text=project_name)
 
-        self.button_wrapper.wait_for_element(self.new_project_page.button_advanced_settings_locator)
+        self.button_wrapper.wait_for_element_presence(self.new_project_page.button_advanced_settings_locator)
         element = self.new_project_page.button_advanced_settings_element()
         self.button_wrapper.click_on_element(button_element=element)
 
-        self.text_box_wrapper.wait_for_element(self.new_project_page.textBox_description_locator)
+        self.text_box_wrapper.wait_for_element_presence(self.new_project_page.textBox_description_locator)
         element = self.new_project_page.textbox_description_element()
         self.text_box_wrapper.send_keys(web_element=element, text=description)
 
-        self.button_wrapper.wait_for_element(self.new_project_page.combo_status_locator)
+        self.button_wrapper.wait_for_element_presence(self.new_project_page.combo_status_locator)
         element = self.new_project_page.combo_status_element()
         self.button_wrapper.click_on_element(button_element=element)
 
-        self.list_wrapper.wait_for_element(self.new_project_page.list_status_locator)
+        self.list_wrapper.wait_for_element_presence(self.new_project_page.list_status_locator)
         element = self.new_project_page.list_status_element()
         by_class_tuple = (By.CLASS_NAME, "project-status--name")
         self.list_wrapper.get_element_from_list_base_entity(parent_element=element, locator=by_class_tuple,
                                                             text_to_search="ON TRACK").click()
 
     def submit_new_project(self):
-        self.button_wrapper.wait_for_element(self.new_project_page.button_save_locator)
+        self.button_wrapper.wait_for_element_presence(self.new_project_page.button_save_locator)
         element = self.new_project_page.button_save_element()
         self.button_wrapper.click_on_element(button_element=element)

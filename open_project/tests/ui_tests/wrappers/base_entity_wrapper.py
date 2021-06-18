@@ -21,12 +21,19 @@ class BaseWrapper:
         except NoSuchElementException as e:
             return None
 
-    def wait_for_element(self, by: By):
+    def wait_for_element_presence(self, by: By):
         try:
             self.driver_wait.until(method=EC.presence_of_element_located(by))
         except TimeoutException as toe:
             print(toe)
             return None
+
+    def wait_for_element_visible(self, by: By):
+            try:
+                self.driver_wait.until(method=EC.visibility_of_element_located(by))
+            except TimeoutException as toe:
+                print(toe)
+                return None
 
     def click_on_element(self, button_element: WebElement):
         try:

@@ -22,13 +22,13 @@ class LoginPageObject(BasePageObject):
         self.driver.get(domain + '/login')
 
     def fill_login_page(self, username: str, password: str):
-        self.text_box_wrapper.wait_for_element(self.login_page.textBox_username_locator)
+        self.text_box_wrapper.wait_for_element_presence(self.login_page.textBox_username_locator)
         element = self.login_page.textbox_username_element()
         self.text_box_wrapper.send_keys(element, text=username)
         element = self.login_page.textbox_password_element()
         self.text_box_wrapper.send_keys(element, text=password)
 
     def submit_form(self):
-        self.button_wrapper.wait_for_element(self.login_page.button_sign_in_locator)
+        self.button_wrapper.wait_for_element_presence(self.login_page.button_sign_in_locator)
         element = self.login_page.button_sign_in_element()
         self.button_wrapper.click_on_element(button_element=element)
