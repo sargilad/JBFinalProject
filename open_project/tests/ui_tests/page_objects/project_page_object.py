@@ -10,6 +10,8 @@ class ProjectPageObject(BasePageObject):
     project_page: ProjectPage
     base_wrapper: BaseWrapper
 
+    project_name: str = ""
+
     def __init__(self, driver: webdriver, driver_wait: WebDriverWait):
         super().__init__(driver, driver_wait)
         self.project_page = ProjectPage(driver, driver_wait)
@@ -17,3 +19,9 @@ class ProjectPageObject(BasePageObject):
 
     def wait_for_page_ready(self):
         self.base_wrapper.wait_for_element(self.project_page.header_overview_locator)
+
+    def set_project_name(self, name: str):
+        self.project_name = name
+
+    def get_project_name(self):
+        return self.project_name

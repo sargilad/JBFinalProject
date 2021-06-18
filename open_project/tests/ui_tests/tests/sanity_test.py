@@ -1,3 +1,5 @@
+import pytest
+
 from open_project.tests.ui_tests.page_objects.login_page_object import LoginPageObject
 from open_project.tests.ui_tests.page_objects.mypage_page_object import MyPagePageObject
 from open_project.tests.ui_tests.page_objects.new_project_page_object import NewProjectPageObject
@@ -5,12 +7,13 @@ from open_project.tests.ui_tests.page_objects.project_page_object import Project
 from open_project.tests.ui_tests.tests.ui_base_test import BaseUITestClass
 
 
-# @pytest.mark.sanity
+@pytest.mark.sanity
 class TestOpenProjectSanityTests(BaseUITestClass):
     login_page_object: LoginPageObject
     my_page_page_object: MyPagePageObject
     new_project_page_object: NewProjectPageObject
     project_page_object: ProjectPageObject
+
 
     def __init__(self):
         super().__init__()
@@ -20,7 +23,7 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         self.new_project_page_object = NewProjectPageObject(driver=self.driver, driver_wait=self.driver_wait)
         self.project_page_object = ProjectPageObject(driver=self.driver, driver_wait=self.driver_wait)
 
-    def test_create_project_sanity(self):
+    def test_create_project_sanity(self) -> str:
         # login page
         self.login_page_object.goto_page(domain=self.domain)
         self.login_page_object.fill_login_page(username=self.username, password=self.password)
@@ -42,6 +45,33 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         project_name_created = self.my_page_page_object.get_project_name_from_drop_down()
         assert project_name_created == proj_name
 
+        self.project_page_object.set_project_name(proj_name)
+
+
+
+    def test_create_work_package_sanity(self):
+        self.test_create_project_sanity()
+
+        #select project from list
+
+        #select work packages
+
+        #Get and save the row # in table
+
+        #click new task
+
+        #verify new task header as validation
+
+        #fill subject and description
+
+        #click save
+
+        #Verify rows # incremented by 1
+
+        #verify subject and type
+
+
+
 
 test = TestOpenProjectSanityTests()
-test.test_create_project_sanity()
+test.test_create_work_package_sanity()

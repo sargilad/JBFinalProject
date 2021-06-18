@@ -49,6 +49,3 @@ class NewProjectPageObject(BasePageObject):
         self.button_wrapper.wait_for_element(self.new_project_page.button_save_locator)
         element = self.new_project_page.button_save_element()
         self.button_wrapper.click_on_element(button_element=element)
-
-    def wait_for_project_overview_page(self):
-        pass
