@@ -28,12 +28,19 @@ class BaseWrapper:
             print(toe)
             return None
 
+    def wait_for_url_contains(self, url_substr: str):
+        try:
+            self.driver_wait.until(method=EC.url_contains(url_substr))
+        except TimeoutException as toe:
+            print(toe)
+            return None
+
     def wait_for_element_visible(self, by: By):
-            try:
-                self.driver_wait.until(method=EC.visibility_of_element_located(by))
-            except TimeoutException as toe:
-                print(toe)
-                return None
+        try:
+            self.driver_wait.until(method=EC.visibility_of_element_located(by))
+        except TimeoutException as toe:
+            print(toe)
+            return None
 
     def click_on_element(self, button_element: WebElement):
         try:

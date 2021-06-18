@@ -54,26 +54,25 @@ class TestOpenProjectSanityTests(BaseUITestClass):
 
     def test_create_work_package_sanity(self):
         self.test_create_project_sanity()
-
         project_name = self.project_page_object.get_project_name()
+
         self.my_page_page_object.select_project_from_list(project_name)
-
         self.project_page_object.select_from_root_menu("Work packages")
+        work_packages_count_before = self.work_packages_page_object.get_packages_table_rows_count()
 
-        # Get and save the row # in table
-
-        # click new task
+        # create new task
         self.work_packages_page_object.open_new_work_page()
 
         # verify new task header as validation
 
-        # fill subject and description
         self.new_work_package_page_object.fill_new_package_data("pkg1", "Package description")
-
-        # click save
         self.new_work_package_page_object.submit_new_package()
+        self.work_packages_page_object.wait_for_package_page()
 
         # Verify rows # incremented by 1
+        self.work_packages_page_object.select_from_root_menu("All open")
+        work_packages_count_after = self.work_packages_page_object.get_packages_table_rows_count()
+        assert work_packages_count_after-work_packages_count_before == 1
 
         # verify subject and type
 
