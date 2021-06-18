@@ -14,7 +14,6 @@ class TestOpenProjectSanityTests(BaseUITestClass):
     new_project_page_object: NewProjectPageObject
     project_page_object: ProjectPageObject
 
-
     def __init__(self):
         super().__init__()
 
@@ -47,30 +46,27 @@ class TestOpenProjectSanityTests(BaseUITestClass):
 
         self.project_page_object.set_project_name(proj_name)
 
-
-
     def test_create_work_package_sanity(self):
         self.test_create_project_sanity()
 
-        #select project from list
+        project_name = self.project_page_object.get_project_name()
+        self.my_page_page_object.select_project_from_list(project_name)
 
-        #select work packages
+        # select work packages
 
-        #Get and save the row # in table
+        # Get and save the row # in table
 
-        #click new task
+        # click new task
 
-        #verify new task header as validation
+        # verify new task header as validation
 
-        #fill subject and description
+        # fill subject and description
 
-        #click save
+        # click save
 
-        #Verify rows # incremented by 1
+        # Verify rows # incremented by 1
 
-        #verify subject and type
-
-
+        # verify subject and type
 
 
 test = TestOpenProjectSanityTests()

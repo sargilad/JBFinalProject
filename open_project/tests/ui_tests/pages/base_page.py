@@ -15,7 +15,6 @@ class BasePage:
     button_wrapper: ButtonWrapper
     list_wrapper: ListWrapper
 
-
     by_list_tag_locator = (By.TAG_NAME, "li")
 
     def __init__(self, driver: webdriver, driver_wait: WebDriverWait):

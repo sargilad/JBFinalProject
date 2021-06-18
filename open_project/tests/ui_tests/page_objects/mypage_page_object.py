@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -35,3 +37,14 @@ class MyPagePageObject(BasePageObject):
         self.button_wrapper.wait_for_element(self.my_page_page.drop_down_projects_list_locator)
         element = self.my_page_page.drop_down_projects_list_element()
         return element.text
+
+    def select_project_from_list(self, project_name: str):
+        element = self.my_page_page.drop_down_projects_list_element()
+        self.button_wrapper.click_on_element(element)
+
+        self.list_wrapper.wait_for_element(self.my_page_page.list_projects_locator)
+        time.sleep(1)
+        list_element = self.my_page_page.list_projects_element()
+        element = self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
+                                                                      locator=self.my_page_page.by_list_tag_locator,
+                                                                      text_to_search=project_name).click()
