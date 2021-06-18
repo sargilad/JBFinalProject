@@ -61,18 +61,17 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         work_packages_count_before = self.work_packages_page_object.get_packages_table_rows_count()
 
         # create new task
-        self.work_packages_page_object.open_new_work_page()
-
-        # verify new task header as validation
-
+        self.work_packages_page_object.open_new_work_page("TASK")
+        work_pkg_title = self.new_work_package_page_object.get_new_work_package_title()
+        assert work_pkg_title == "New TASK"
         self.new_work_package_page_object.fill_new_package_data("pkg1", "Package description")
         self.new_work_package_page_object.submit_new_package()
-        self.work_packages_page_object.wait_for_package_page()
 
         # Verify rows # incremented by 1
+        self.work_packages_page_object.wait_for_package_page()
         self.work_packages_page_object.select_from_root_menu("All open")
         work_packages_count_after = self.work_packages_page_object.get_packages_table_rows_count()
-        assert work_packages_count_after-work_packages_count_before == 1
+        assert work_packages_count_after - work_packages_count_before == 1
 
         # verify subject and type
 

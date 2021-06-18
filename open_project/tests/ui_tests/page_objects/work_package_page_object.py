@@ -21,7 +21,7 @@ class WorkPackagesPageObject(BasePageObject):
         self.list_wrapper = ListWrapper(driver, driver_wait)
         self.table_wrapper = TableWrapper(driver, driver_wait)
 
-    def open_new_work_page(self):
+    def open_new_work_page(self, task_type: str = "TASK"):
         self.button_wrapper.wait_for_element_presence(self.work_packages_page.button_add_locator)
         element = self.work_packages_page.button_add_element()
         self.button_wrapper.click_on_element(button_element=element)
@@ -30,7 +30,7 @@ class WorkPackagesPageObject(BasePageObject):
         list_element = self.work_packages_page.list_work_type_element()
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
                                                             locator=self.work_packages_page.by_list_tag_locator,
-                                                            text_to_search="TASK").click()
+                                                            text_to_search=task_type).click()
 
     def get_packages_table_rows_count(self) -> int:
         self.table_wrapper.wait_for_element_visible(self.work_packages_page.table_work_packages_locator)
