@@ -47,3 +47,7 @@ class WorkPackagesPageObject(BasePageObject):
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
                                                             locator=self.work_packages_page.by_list_tag_locator,
                                                             text_to_search=list_item).click()
+
+    def get_element_from_packages_table(self, row: int, column: str) -> str:
+        table_element = self.work_packages_page.table_work_packages_element()
+        return self.table_wrapper.get_cell_value_from_table(table_element, row, column)

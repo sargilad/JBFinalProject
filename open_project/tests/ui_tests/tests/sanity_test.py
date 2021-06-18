@@ -56,15 +56,17 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         self.test_create_project_sanity()
         project_name = self.project_page_object.get_project_name()
 
-        self.my_page_page_object.select_project_from_list(project_name)
+        self.my_page_page_object.select_project_from_list(project_name) #todo investigate
         self.project_page_object.select_from_root_menu("Work packages")
         work_packages_count_before = self.work_packages_page_object.get_packages_table_rows_count()
 
         # create new task
-        self.work_packages_page_object.open_new_work_page("TASK")
+        task_type = "TASK"  # todo change to enum
+        self.work_packages_page_object.open_new_work_page(task_type)
         work_pkg_title = self.new_work_package_page_object.get_new_work_package_title()
         assert work_pkg_title == "New TASK"
-        self.new_work_package_page_object.fill_new_package_data("pkg1", "Package description")
+        task_subject = "pkg1"  # todo randomize
+        self.new_work_package_page_object.fill_new_package_data(task_subject, "Package description")
         self.new_work_package_page_object.submit_new_package()
 
         # Verify rows # incremented by 1
@@ -74,6 +76,10 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         assert work_packages_count_after - work_packages_count_before == 1
 
         # verify subject and type
+        task_type_created = self.work_packages_page_object.get_element_from_packages_table(0, "TYPE")
+        assert task_type_created == "TASK"
+        task_subject_created = self.work_packages_page_object.get_element_from_packages_table(0, "SUBJECT")
+        assert task_subject_created == task_subject
 
 
 test = TestOpenProjectSanityTests()
