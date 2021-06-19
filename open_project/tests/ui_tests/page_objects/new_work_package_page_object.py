@@ -20,7 +20,7 @@ class NewWorkPackagePageObject(BasePageObject):
         self.text_box_wrapper = TextBoxWrapper(driver, driver_wait)
         self.base_wrapper = BaseWrapper(driver, driver_wait)
 
-    def fill_new_package_data(self, package_name: str, description: str = "Description"):
+    def fill_new_work_package_data(self, package_name: str, description: str = "Description"):
         self.text_box_wrapper.wait_for_element_presence(self.new_work_package_page.text_box_package_name_locator)
         element = self.new_work_package_page.text_box_package_name_element()
         self.text_box_wrapper.send_keys(web_element=element, text=package_name)

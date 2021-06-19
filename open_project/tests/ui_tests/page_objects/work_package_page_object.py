@@ -21,7 +21,7 @@ class WorkPackagesPageObject(BasePageObject):
         self.list_wrapper = ListWrapper(driver, driver_wait)
         self.table_wrapper = TableWrapper(driver, driver_wait)
 
-    def open_new_work_page(self, task_type: str = "TASK"):
+    def open_new_work_package_page(self, task_type: str = "TASK"):
         self.button_wrapper.wait_for_element_presence(self.work_packages_page.button_add_locator)
         element = self.work_packages_page.button_add_element()
         self.button_wrapper.click_on_element(button_element=element)
@@ -39,15 +39,15 @@ class WorkPackagesPageObject(BasePageObject):
             return 0
         return len(table_rows)
 
-    def wait_for_package_page(self):
+    def wait_for_work_package_page(self):
         self.work_packages_page.base_wrapper.wait_for_url_contains("/overview")
 
-    def select_from_root_menu(self, list_item: str):
+    def select_from_side_menu(self, list_item: str):
         list_element = self.work_packages_page.list_menu_root_element()
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
                                                             locator=self.work_packages_page.by_list_tag_locator,
                                                             text_to_search=list_item).click()
 
-    def get_element_from_packages_table(self, row: int, column: str) -> str:
+    def get_element_from_work_packages_table(self, row: int, column: str) -> str:
         table_element = self.work_packages_page.table_work_packages_element()
         return self.table_wrapper.get_cell_value_from_table(table_element, row, column)

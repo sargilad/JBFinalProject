@@ -1,5 +1,6 @@
 import pytest
 
+from open_project.tests.api_tests.utilities.enums import WorkPackageType, SideMenuItems, WorkPackagesTableHeaders
 from open_project.tests.ui_tests.page_objects.login_page_object import LoginPageObject
 from open_project.tests.ui_tests.page_objects.mypage_page_object import MyPagePageObject
 from open_project.tests.ui_tests.page_objects.new_project_page_object import NewProjectPageObject
@@ -34,10 +35,8 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         self.login_page_object.fill_login_page(username=self.username, password=self.password)
         self.login_page_object.submit_form()
 
-        # Home page
-        self.my_page_page_object.open_new_project_page()
-
         # Add New project
+        self.my_page_page_object.open_new_project_page()
         proj_name = self.common_utilities.get_random_string(prefix="proj-")
         proj_description = self.common_utilities.get_random_string(str_length=50)
         self.new_project_page_object.fill_project_data(project_name=proj_name,
@@ -46,39 +45,40 @@ class TestOpenProjectSanityTests(BaseUITestClass):
 
         # validate project created
         self.project_page_object.wait_for_page_ready()
-
         project_name_created = self.my_page_page_object.get_project_name_from_drop_down()
         assert project_name_created == proj_name
-
         self.project_page_object.set_project_name(proj_name)
 
     def test_create_work_package_sanity(self):
+        # Create new project
         self.test_create_project_sanity()
         project_name = self.project_page_object.get_project_name()
 
-        self.my_page_page_object.select_project_from_list(project_name) #todo investigate
-        self.project_page_object.select_from_root_menu("Work packages")
+        # Navigate to work packages
+        self.my_page_page_object.select_project_from_list(project_name)  # todo investigate
+        self.project_page_object.select_from_side_menu(SideMenuItems.WORK_PACKAGES.value)
         work_packages_count_before = self.work_packages_page_object.get_packages_table_rows_count()
 
         # create new task
-        task_type = "TASK"  # todo change to enum
-        self.work_packages_page_object.open_new_work_page(task_type)
+        self.work_packages_page_object.open_new_work_package_page(WorkPackageType.TASK.value)
         work_pkg_title = self.new_work_package_page_object.get_new_work_package_title()
-        assert work_pkg_title == "New TASK"
-        task_subject = "pkg1"  # todo randomize
-        self.new_work_package_page_object.fill_new_package_data(task_subject, "Package description")
+        assert work_pkg_title == "New " + WorkPackageType.TASK.value
+        task_subject = "pkg1"
+        self.new_work_package_page_object.fill_new_work_package_data(task_subject, "Package description")
         self.new_work_package_page_object.submit_new_package()
 
         # Verify rows # incremented by 1
-        self.work_packages_page_object.wait_for_package_page()
-        self.work_packages_page_object.select_from_root_menu("All open")
+        self.work_packages_page_object.wait_for_work_package_page()
+        self.work_packages_page_object.select_from_side_menu(SideMenuItems.ALL_OPEN.value)
         work_packages_count_after = self.work_packages_page_object.get_packages_table_rows_count()
         assert work_packages_count_after - work_packages_count_before == 1
 
         # verify subject and type
-        task_type_created = self.work_packages_page_object.get_element_from_packages_table(0, "TYPE")
-        assert task_type_created == "TASK"
-        task_subject_created = self.work_packages_page_object.get_element_from_packages_table(0, "SUBJECT")
+        task_type_created = self.work_packages_page_object. \
+            get_element_from_work_packages_table(0, WorkPackagesTableHeaders.TYPE.value)
+        assert task_type_created == WorkPackageType.TASK.value
+        task_subject_created = self.work_packages_page_object. \
+            get_element_from_work_packages_table(0, WorkPackagesTableHeaders.SUBJECT.value)
         assert task_subject_created == task_subject
 
 
