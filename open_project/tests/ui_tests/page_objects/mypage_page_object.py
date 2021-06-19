@@ -1,7 +1,6 @@
 import time
 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 
 from open_project.tests.ui_tests.page_objects.base_page_object import BasePageObject
