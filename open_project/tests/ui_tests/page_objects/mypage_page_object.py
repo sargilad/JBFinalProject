@@ -1,6 +1,7 @@
 import time
 
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 
 from open_project.tests.ui_tests.page_objects.base_page_object import BasePageObject
@@ -42,9 +43,13 @@ class MyPagePageObject(BasePageObject):
         element = self.my_page_page.drop_down_projects_list_element()
         self.button_wrapper.click_on_element(element)
 
-        self.list_wrapper.wait_for_element_presence(self.my_page_page.list_projects_locator)
+        self.text_box_wrapper.wait_for_element_visible(self.my_page_page.text_search_project_locator)
+        search_element = self.my_page_page.text_search_project_element()
+        self.text_box_wrapper.send_keys(search_element, project_name)
+
+        self.list_wrapper.wait_for_element_visible(self.my_page_page.list_projects_locator)
         time.sleep(1)
         list_element = self.my_page_page.list_projects_element()
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
-                                                                      locator=self.my_page_page.by_list_tag_locator,
-                                                                      text_to_search=project_name).click()
+                                                            locator=self.my_page_page.by_list_tag_locator,
+                                                            text_to_search=project_name).click()

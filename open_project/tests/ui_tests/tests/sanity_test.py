@@ -55,7 +55,7 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         project_name = self.project_page_object.get_project_name()
 
         # Navigate to work packages
-        self.my_page_page_object.select_project_from_list(project_name)  # todo investigate
+        self.my_page_page_object.select_project_from_list(project_name)
         self.project_page_object.select_from_side_menu(SideMenuItems.WORK_PACKAGES.value)
         work_packages_count_before = self.work_packages_page_object.get_packages_table_rows_count()
 

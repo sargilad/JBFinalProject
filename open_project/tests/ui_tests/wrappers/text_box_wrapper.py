@@ -1,4 +1,5 @@
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 
 from open_project.tests.ui_tests.wrappers.base_entity_wrapper import BaseWrapper
