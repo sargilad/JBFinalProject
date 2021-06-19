@@ -1,35 +1,12 @@
 import pytest
 
 from open_project.tests.api_tests.utilities.enums import WorkPackageType, SideMenuItems, WorkPackagesTableHeaders
-from open_project.tests.ui_tests.page_objects.login_page_object import LoginPageObject
-from open_project.tests.ui_tests.page_objects.mypage_page_object import MyPagePageObject
-from open_project.tests.ui_tests.page_objects.new_project_page_object import NewProjectPageObject
-from open_project.tests.ui_tests.page_objects.new_work_package_page_object import NewWorkPackagePageObject
-from open_project.tests.ui_tests.page_objects.project_page_object import ProjectPageObject
-from open_project.tests.ui_tests.page_objects.work_package_page_object import WorkPackagesPageObject
 from open_project.tests.ui_tests.tests.ui_base_test import BaseUITestClass
 
 
 @pytest.mark.sanity
 class TestOpenProjectSanityTests(BaseUITestClass):
-    login_page_object: LoginPageObject
-    my_page_page_object: MyPagePageObject
-    new_project_page_object: NewProjectPageObject
-    project_page_object: ProjectPageObject
-    work_packages_page_object: WorkPackagesPageObject
-    new_work_package_page_object: NewWorkPackagePageObject
-
-    def __init__(self):
-        super().__init__()
-
-        self.login_page_object = LoginPageObject(driver=self.driver, driver_wait=self.driver_wait)
-        self.my_page_page_object = MyPagePageObject(driver=self.driver, driver_wait=self.driver_wait)
-        self.new_project_page_object = NewProjectPageObject(driver=self.driver, driver_wait=self.driver_wait)
-        self.project_page_object = ProjectPageObject(driver=self.driver, driver_wait=self.driver_wait)
-        self.work_packages_page_object = WorkPackagesPageObject(driver=self.driver, driver_wait=self.driver_wait)
-        self.new_work_package_page_object = NewWorkPackagePageObject(driver=self.driver, driver_wait=self.driver_wait)
-
-    def test_create_project_sanity(self) -> str:
+    def test_create_project_sanity(self, init_test) -> str:
         # login page
         self.login_page_object.goto_page(domain=self.domain)
         self.login_page_object.fill_login_page(username=self.username, password=self.password)
@@ -49,9 +26,9 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         assert project_name_created == proj_name
         self.project_page_object.set_project_name(proj_name)
 
-    def test_create_work_package_sanity(self):
+    def test_create_work_package_sanity(self, init_test):
         # Create new project
-        self.test_create_project_sanity()
+        self.test_create_project_sanity(init_test)
         project_name = self.project_page_object.get_project_name()
 
         # Navigate to work packages
@@ -80,8 +57,3 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         task_subject_created = self.work_packages_page_object. \
             get_element_from_work_packages_table(0, WorkPackagesTableHeaders.SUBJECT.value)
         assert task_subject_created == task_subject
-
-
-test = TestOpenProjectSanityTests()
-test.test_create_work_package_sanity()
-print("done")
