@@ -6,11 +6,7 @@ from open_project.tests.ui_tests.pages.base_page import BasePage
 
 class NewProjectPage(BasePage):
     textBox_name_locator = (By.CSS_SELECTOR, "#formly_3_textInput_name_0")
-    button_advanced_settings_locator = (
-        By.CSS_SELECTOR, "#content > openproject-base > "
-                         "div > ui-view > op-new-project > op-dynamic-form >"
-                         " form > formly-form > formly-field:nth-child(3) > "
-                         "op-dynamic-field-group-wrapper > fieldset > legend > button")
+    button_advanced_settings_locator = (By.CLASS_NAME, "op-fieldset--toggle")
 
     textBox_description_locator = (By.CSS_SELECTOR,
                                    "#formly_9_formattableInput_description_1 >"
@@ -21,7 +17,8 @@ class NewProjectPage(BasePage):
     list_status_locator = (By.CLASS_NAME, "ng-dropdown-panel-items")
 
     button_save_locator = (By.CSS_SELECTOR,
-                           "#content > openproject-base > div > ui-view > op-new-project > op-dynamic-form > form > div > button")
+                           "#content > openproject-base > div > ui-view > op-new-project >"
+                           " op-dynamic-form > form > div > button")
 
     def textbox_username_element(self) -> WebElement:
         return self.text_box_wrapper.get_element(self.textBox_name_locator)
