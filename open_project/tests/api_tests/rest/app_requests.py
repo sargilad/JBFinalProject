@@ -4,6 +4,8 @@ from http import HTTPStatus
 
 import json
 
+import allure
+
 from open_project.tests.api_tests.rest.client import RestClient
 
 
@@ -19,6 +21,7 @@ class RestRequests:
         self.work_pkg_url = domain + "api/v3/work_packages/"
         self.api_token = api_token
 
+    @allure.step("creating new project")
     def create_project(self, body) -> json:
         try:
             response = self.rest_client.post(url=self.projects_url, body=body,
@@ -30,6 +33,7 @@ class RestRequests:
         except Exception as e:
             print(e)
 
+    @allure.step("querying project")
     def get_single_project(self, id: int, expected_status: int = HTTPStatus.OK, attempts: int = 1) -> json:
         try:
             response = None
@@ -55,6 +59,7 @@ class RestRequests:
             print(e)
             return None
 
+    @allure.step("updating project")
     def update_project(self, id, body):
         try:
             response = self.rest_client.patch(url=self.projects_url + str(id), body=body,
@@ -67,6 +72,7 @@ class RestRequests:
             print(e)
             return None
 
+    @allure.step("deleting project")
     def delete_project(self, id, body) -> int:
         try:
             response = self.rest_client.delete(url=self.projects_url + str(id), body=body,
@@ -79,6 +85,7 @@ class RestRequests:
             print(e)
             return HTTPStatus.EXPECTATION_FAILED
 
+    @allure.step("creating new work package")
     def create_work_package(self, body) -> json:
         try:
             response = self.rest_client.post(url=self.work_pkg_url, body=body,
@@ -91,6 +98,7 @@ class RestRequests:
             print(e)
             return None
 
+    @allure.step("querying work package")
     def get_work_package(self, id: int) -> json:
         try:
             response = self.rest_client.get(url=self.work_pkg_url + str(id), headers_list=self._build_request_header())
@@ -105,6 +113,7 @@ class RestRequests:
             print(e)
             return None  # might cause NPE
 
+    @allure.step("updating work package")
     def update_work_package(self, id, body):
         try:
             response = self.rest_client.patch(url=self.work_pkg_url + str(id), body=body,
@@ -117,6 +126,7 @@ class RestRequests:
             print(e)
             return None
 
+    @allure.step("deleting work package")
     def delete_work_package(self, id: int, body: dict = {}) -> int:
         try:
             response = self.rest_client.delete(url=self.work_pkg_url + str(id), body=body,
