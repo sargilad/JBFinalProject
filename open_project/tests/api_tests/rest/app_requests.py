@@ -5,6 +5,7 @@ from http import HTTPStatus
 import json
 
 import allure
+import pytest
 
 from open_project.tests.api_tests.rest.client import RestClient
 
@@ -31,7 +32,7 @@ class RestRequests:
                 return response.json()
             raise Exception("Failed to CREATE project")
         except Exception as e:
-            print(e)
+            pytest.raises(e)
 
     @allure.step("querying project")
     def get_single_project(self, id: int, expected_status: int = HTTPStatus.OK, attempts: int = 1) -> json:
@@ -56,8 +57,7 @@ class RestRequests:
                 return {}
             raise Exception("Failed to GET project")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
     @allure.step("updating project")
     def update_project(self, id, body):
@@ -69,8 +69,7 @@ class RestRequests:
                 return response.json()
             raise Exception("Failed to UPDATE project")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
     @allure.step("deleting project")
     def delete_project(self, id, body) -> int:
@@ -82,8 +81,7 @@ class RestRequests:
                 return HTTPStatus.NO_CONTENT
             raise Exception("Failed to DELETE project")
         except Exception as e:
-            print(e)
-            return HTTPStatus.EXPECTATION_FAILED
+            pytest.raises(e)
 
     @allure.step("creating new work package")
     def create_work_package(self, body) -> json:
@@ -95,8 +93,7 @@ class RestRequests:
                 return response.json()
             raise Exception("Failed to CREATE package")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
     @allure.step("querying work package")
     def get_work_package(self, id: int) -> json:
@@ -110,8 +107,7 @@ class RestRequests:
                 return {}
             raise Exception("Failed to GET package")
         except Exception as e:
-            print(e)
-            return None  # might cause NPE
+            pytest.raises(e)
 
     @allure.step("updating work package")
     def update_work_package(self, id, body):
@@ -123,8 +119,7 @@ class RestRequests:
                 return response.json()
             raise Exception("Failed to UPDATE package")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
     @allure.step("deleting work package")
     def delete_work_package(self, id: int, body: dict = {}) -> int:
@@ -136,8 +131,7 @@ class RestRequests:
                 return HTTPStatus.NO_CONTENT
             raise Exception("Failed to DELETE package")
         except Exception as e:
-            print(e)
-            return HTTPStatus.EXPECTATION_FAILED
+            pytest.raises(e)
 
     def _build_request_header(self) -> dict:
         return {self._HeadersEnum.AUTHORIZATION.value: 'Basic ' + self.api_token,

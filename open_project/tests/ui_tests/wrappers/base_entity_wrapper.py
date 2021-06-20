@@ -1,3 +1,5 @@
+import allure
+import pytest
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException, \
     StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -19,35 +21,48 @@ class BaseWrapper:
         try:
             return self.driver.find_element(*by)
         except NoSuchElementException as e:
-            return None
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=e)
 
     def wait_for_element_presence(self, by: By):
         try:
             self.driver_wait.until(method=EC.presence_of_element_located(by))
         except TimeoutException as toe:
-            print(toe)
-            return None
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=toe)
 
     def wait_for_url_contains(self, url_substr: str):
         try:
             self.driver_wait.until(method=EC.url_contains(url_substr))
         except TimeoutException as toe:
-            print(toe)
-            return None
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=toe)
 
     def wait_for_element_visible(self, by: By):
         try:
             self.driver_wait.until(method=EC.visibility_of_element_located(by))
         except TimeoutException as toe:
-            print(toe)
-            return None
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=toe)
 
     def click_on_element(self, button_element: WebElement):
         try:
             button_element.click()
         except ElementNotVisibleException as enve:
-            print(enve)
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=enve)
+
         except StaleElementReferenceException as ser:
-            print(ser)
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=ser)
+
         except Exception as e:
-            print(e)
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=e)
