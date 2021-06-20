@@ -4,6 +4,9 @@ from http import HTTPStatus
 
 import json
 
+import allure
+import pytest
+
 from open_project.tests.api_tests.rest.client import RestClient
 
 
@@ -19,6 +22,7 @@ class RestRequests:
         self.work_pkg_url = domain + "api/v3/work_packages/"
         self.api_token = api_token
 
+    @allure.step("creating new project")
     def create_project(self, body) -> json:
         try:
             response = self.rest_client.post(url=self.projects_url, body=body,
@@ -26,10 +30,11 @@ class RestRequests:
             if response.status_code == HTTPStatus.CREATED:
                 print(f"project CREATE: {response.json()}")
                 return response.json()
+            raise Exception("Failed to CREATE project")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
+    @allure.step("querying project")
     def get_single_project(self, id: int, expected_status: int = HTTPStatus.OK, attempts: int = 1) -> json:
         try:
             response = None
@@ -50,10 +55,11 @@ class RestRequests:
             elif response.status_code == HTTPStatus.NOT_FOUND:
                 print(f"Project id {id} not found")
                 return {}
+            raise Exception("Failed to GET project")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
+    @allure.step("updating project")
     def update_project(self, id, body):
         try:
             response = self.rest_client.patch(url=self.projects_url + str(id), body=body,
@@ -61,10 +67,11 @@ class RestRequests:
             if response.status_code == HTTPStatus.OK:
                 print(f"project PATCH: {response.json()}")
                 return response.json()
+            raise Exception("Failed to UPDATE project")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
+    @allure.step("deleting project")
     def delete_project(self, id, body) -> int:
         try:
             response = self.rest_client.delete(url=self.projects_url + str(id), body=body,
@@ -72,10 +79,11 @@ class RestRequests:
             if response.status_code == HTTPStatus.NO_CONTENT:
                 print(f"project deleted")
                 return HTTPStatus.NO_CONTENT
+            raise Exception("Failed to DELETE project")
         except Exception as e:
-            print(e)
-            return HTTPStatus.EXPECTATION_FAILED
+            pytest.raises(e)
 
+    @allure.step("creating new work package")
     def create_work_package(self, body) -> json:
         try:
             response = self.rest_client.post(url=self.work_pkg_url, body=body,
@@ -83,10 +91,11 @@ class RestRequests:
             if response.status_code == HTTPStatus.CREATED:
                 print(f"package CREATE: {response.json()}")
                 return response.json()
+            raise Exception("Failed to CREATE package")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
+    @allure.step("querying work package")
     def get_work_package(self, id: int) -> json:
         try:
             response = self.rest_client.get(url=self.work_pkg_url + str(id), headers_list=self._build_request_header())
@@ -96,10 +105,11 @@ class RestRequests:
             elif response.status_code == HTTPStatus.NOT_FOUND:
                 print(f"package id {id} not found")
                 return {}
+            raise Exception("Failed to GET package")
         except Exception as e:
-            print(e)
-            return None  # might cause NPE
+            pytest.raises(e)
 
+    @allure.step("updating work package")
     def update_work_package(self, id, body):
         try:
             response = self.rest_client.patch(url=self.work_pkg_url + str(id), body=body,
@@ -107,10 +117,11 @@ class RestRequests:
             if response.status_code == HTTPStatus.OK:
                 print(f"package PATCH: {response.json()}")
                 return response.json()
+            raise Exception("Failed to UPDATE package")
         except Exception as e:
-            print(e)
-            return None
+            pytest.raises(e)
 
+    @allure.step("deleting work package")
     def delete_work_package(self, id: int, body: dict = {}) -> int:
         try:
             response = self.rest_client.delete(url=self.work_pkg_url + str(id), body=body,
@@ -118,9 +129,9 @@ class RestRequests:
             if response.status_code == HTTPStatus.NO_CONTENT:
                 print(f"Work package deleted")
                 return HTTPStatus.NO_CONTENT
+            raise Exception("Failed to DELETE package")
         except Exception as e:
-            print(e)
-            return HTTPStatus.EXPECTATION_FAILED
+            pytest.raises(e)
 
     def _build_request_header(self) -> dict:
         return {self._HeadersEnum.AUTHORIZATION.value: 'Basic ' + self.api_token,
