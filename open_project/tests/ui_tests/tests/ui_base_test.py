@@ -1,6 +1,5 @@
 import configparser
 
-import allure
 import pytest
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait

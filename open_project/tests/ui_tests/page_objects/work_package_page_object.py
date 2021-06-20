@@ -45,7 +45,7 @@ class WorkPackagesPageObject(BasePageObject):
     def wait_for_work_package_page(self):
         self.work_packages_page.base_wrapper.wait_for_url_contains("/overview")
 
-    @allure.step("Select from side menu")
+    @allure.step("Select {1} from side menu")
     def select_from_side_menu(self, list_item: str):
         list_element = self.work_packages_page.list_menu_root_element()
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,

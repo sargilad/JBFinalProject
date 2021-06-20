@@ -31,7 +31,7 @@ class ProjectPageObject(BasePageObject):
     def get_project_name(self):
         return self.project_name
 
-    @allure.step("Select project from side menu")
+    @allure.step("Select {1} from side menu")
     def select_from_side_menu(self, list_item: str):
         list_element = self.project_page.list_menu_root_element()
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,
