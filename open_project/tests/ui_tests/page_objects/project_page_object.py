@@ -1,3 +1,4 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -20,6 +21,7 @@ class ProjectPageObject(BasePageObject):
         self.base_wrapper = BaseWrapper(driver, driver_wait)
         self.list_wrapper = ListWrapper(driver, driver_wait)
 
+    @allure.step("Wait for project page to load")
     def wait_for_page_ready(self):
         self.base_wrapper.wait_for_element_presence(self.project_page.header_overview_locator)
 
@@ -29,6 +31,7 @@ class ProjectPageObject(BasePageObject):
     def get_project_name(self):
         return self.project_name
 
+    @allure.step("Select project from side menu")
     def select_from_side_menu(self, list_item: str):
         list_element = self.project_page.list_menu_root_element()
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,

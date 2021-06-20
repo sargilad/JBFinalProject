@@ -1,3 +1,4 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from open_project.tests.ui_tests.page_objects.base_page_object import BasePageObject
@@ -20,6 +21,7 @@ class NewWorkPackagePageObject(BasePageObject):
         self.text_box_wrapper = TextBoxWrapper(driver, driver_wait)
         self.base_wrapper = BaseWrapper(driver, driver_wait)
 
+    @allure.step("Fill data for new work package form")
     def fill_new_work_package_data(self, package_name: str, description: str = "Description"):
         self.text_box_wrapper.wait_for_element_presence(self.new_work_package_page.text_box_package_name_locator)
         element = self.new_work_package_page.text_box_package_name_element()
@@ -29,11 +31,13 @@ class NewWorkPackagePageObject(BasePageObject):
         element = self.new_work_package_page.text_box_description_element()
         self.text_box_wrapper.send_keys(web_element=element, text=description)
 
+    @allure.step("Submit new work package form")
     def submit_new_package(self):
         self.button_wrapper.wait_for_element_presence(self.new_work_package_page.button_save_locator)
         element = self.new_work_package_page.button_save_element()
         self.button_wrapper.click_on_element(button_element=element)
 
+    @allure.step("Get work package title")
     def get_new_work_package_title(self) -> str:
         self.base_wrapper.wait_for_element_presence(self.new_work_package_page.label_new_work_package_title_locator)
         element = self.new_work_package_page.label_new_work_package_title_element()

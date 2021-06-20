@@ -1,3 +1,4 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -21,6 +22,7 @@ class WorkPackagesPageObject(BasePageObject):
         self.list_wrapper = ListWrapper(driver, driver_wait)
         self.table_wrapper = TableWrapper(driver, driver_wait)
 
+    @allure.step("Open new work package form")
     def open_new_work_package_page(self, task_type: str = "TASK"):
         self.button_wrapper.wait_for_element_presence(self.work_packages_page.button_add_locator)
         element = self.work_packages_page.button_add_element()
@@ -32,6 +34,7 @@ class WorkPackagesPageObject(BasePageObject):
                                                             locator=self.work_packages_page.by_list_tag_locator,
                                                             text_to_search=task_type).click()
 
+    @allure.step("Get rows count from work packages table")
     def get_packages_table_rows_count(self) -> int:
         self.table_wrapper.wait_for_element_visible(self.work_packages_page.table_work_packages_locator)
         table_rows = self.table_wrapper.get_table_rows(self.work_packages_page.table_work_packages_element())
@@ -42,6 +45,7 @@ class WorkPackagesPageObject(BasePageObject):
     def wait_for_work_package_page(self):
         self.work_packages_page.base_wrapper.wait_for_url_contains("/overview")
 
+    @allure.step("Select from side menu")
     def select_from_side_menu(self, list_item: str):
         list_element = self.work_packages_page.list_menu_root_element()
         self.list_wrapper.get_element_from_list_base_entity(parent_element=list_element,

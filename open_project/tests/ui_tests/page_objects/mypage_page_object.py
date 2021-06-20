@@ -1,5 +1,6 @@
 import time
 
+import allure
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -23,6 +24,7 @@ class MyPagePageObject(BasePageObject):
         self.button_wrapper = ButtonWrapper(driver, driver_wait)
         self.list_wrapper = ListWrapper(driver, driver_wait)
 
+    @allure.step("Open new project page")
     def open_new_project_page(self):
         self.button_wrapper.wait_for_element_presence(self.my_page_page.button_add_locator)
         element = self.my_page_page.button_add_element()
@@ -33,11 +35,13 @@ class MyPagePageObject(BasePageObject):
                                                             locator=self.my_page_page.by_list_tag_locator,
                                                             text_to_search="Project").click()
 
+    @allure.step("Get project name from projects drop down")
     def get_project_name_from_drop_down(self) -> str:
         self.button_wrapper.wait_for_element_presence(self.my_page_page.drop_down_projects_list_locator)
         element = self.my_page_page.drop_down_projects_list_element()
         return element.text
 
+    @allure.step("Select project from list")
     def select_project_from_list(self, project_name: str):
         element = self.my_page_page.drop_down_projects_list_element()
         self.button_wrapper.click_on_element(element)

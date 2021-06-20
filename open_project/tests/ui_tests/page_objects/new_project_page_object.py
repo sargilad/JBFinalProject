@@ -1,3 +1,4 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -22,6 +23,7 @@ class NewProjectPageObject(BasePageObject):
         self.button_wrapper = ButtonWrapper(driver, driver_wait)
         self.list_wrapper = ListWrapper(driver, driver_wait)
 
+    @allure.step("Fill data in new project form")
     def fill_project_data(self, project_name: str, description: str = "Description"):
         self.text_box_wrapper.wait_for_element_presence(self.new_project_page.textBox_name_locator)
         element = self.new_project_page.textbox_username_element()
@@ -45,6 +47,7 @@ class NewProjectPageObject(BasePageObject):
         self.list_wrapper.get_element_from_list_base_entity(parent_element=element, locator=by_class_tuple,
                                                             text_to_search="ON TRACK").click()
 
+    @allure.step("Submit new project form")
     def submit_new_project(self):
         self.button_wrapper.wait_for_element_presence(self.new_project_page.button_save_locator)
         element = self.new_project_page.button_save_element()

@@ -1,11 +1,16 @@
+import allure
 import pytest
+from allure_commons.types import Severity
 
 from open_project.tests.api_tests.utilities.enums import WorkPackageType, SideMenuItems, WorkPackagesTableHeaders
 from open_project.tests.ui_tests.tests.ui_base_test import BaseUITestClass
 
 
 @pytest.mark.sanity
+@allure.severity(severity_level=Severity.CRITICAL)
 class TestOpenProjectSanityTests(BaseUITestClass):
+
+    @allure.description("Create new project sanity test")
     def test_create_project_sanity(self, init_test) -> str:
         # login page
         self.login_page_object.goto_page(domain=self.domain)
@@ -26,6 +31,7 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         assert project_name_created == proj_name
         self.project_page_object.set_project_name(proj_name)
 
+    @allure.description("Create working package sanity test")
     def test_create_work_package_sanity(self, init_test):
         # Create new project
         self.test_create_project_sanity(init_test)
