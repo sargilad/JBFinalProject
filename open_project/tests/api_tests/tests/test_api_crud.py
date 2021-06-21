@@ -5,7 +5,7 @@ import allure
 import pytest
 from allure_commons.types import Severity
 
-from open_project.tests.api_tests.tests.api_base_test import BaseApiTestClass
+from open_project.tests.api_tests.tests.test_api_base import BaseApiTestClass
 
 
 @pytest.mark.proj_sanity
