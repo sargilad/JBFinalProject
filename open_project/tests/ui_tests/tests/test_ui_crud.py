@@ -3,7 +3,7 @@ import pytest
 from allure_commons.types import Severity
 
 from open_project.tests.api_tests.utilities.enums import WorkPackageType, SideMenuItems, WorkPackagesTableHeaders
-from open_project.tests.ui_tests.tests.ui_base_test import BaseUITestClass
+from open_project.tests.ui_tests.tests.test_ui_base import BaseUITestClass
 
 
 @pytest.mark.sanity

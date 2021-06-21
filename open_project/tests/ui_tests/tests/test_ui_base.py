@@ -1,4 +1,5 @@
 import configparser
+import os
 
 import pytest
 from selenium import webdriver
@@ -33,13 +34,14 @@ class BaseUITestClass:
     @pytest.fixture()
     def init_test(self):
         self.config_parser = configparser.ConfigParser()
-        self.config_parser.read('../../env/config.ini')
+        TEST_DIR = os.path.dirname(os.path.abspath(__file__))
+        self.config_parser.read(TEST_DIR + '\\..\\..\\env\\config.ini')
         self.domain = self.config_parser['env']['domain']
         self.username = self.config_parser['user']['username']
         self.password = self.config_parser['user']['password']
         wait_timeout = self.config_parser['env']['wait_timeout']
 
-        self.driver = webdriver.Chrome(executable_path="../../resources/chromedriver.exe")
+        self.driver = webdriver.Chrome(executable_path=TEST_DIR + '\\..\\..\\resources\\chromedriver.exe')
         self.driver_wait: WebDriverWait = WebDriverWait(driver=self.driver, timeout=int(wait_timeout))
 
         self.login_page_object = LoginPageObject(driver=self.driver, driver_wait=self.driver_wait)
