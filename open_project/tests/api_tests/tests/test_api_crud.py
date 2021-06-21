@@ -10,7 +10,7 @@ from open_project.tests.api_tests.tests.test_api_base import BaseApiTestClass
 
 @pytest.mark.proj_sanity
 @allure.severity(severity_level=Severity.CRITICAL)
-class TestProjectCrudTests(BaseApiTestClass):
+class TestProjectCrud(BaseApiTestClass):
     @allure.description("CREATE project test")
     def test_create_project(self) -> json:
         name = self.common_utilities.get_random_string(prefix="proj-")
@@ -58,8 +58,8 @@ class TestProjectCrudTests(BaseApiTestClass):
 
 
 @pytest.mark.workpkg_sanity
-class TestWorkPkgTest(BaseApiTestClass):
-    test_project_crud_tests = TestProjectCrudTests()
+class TestWorkPkg(BaseApiTestClass):
+    test_project_crud_tests = TestProjectCrud()
 
     @allure.description("CREATE work package test")
     def test_create_work_package(self) -> json:
