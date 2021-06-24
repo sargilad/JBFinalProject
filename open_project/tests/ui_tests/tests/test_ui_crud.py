@@ -31,6 +31,7 @@ class TestOpenProjectSanityTests(BaseUITestClass):
         assert project_name_created == proj_name
         self.project_page_object.set_project_name(proj_name)
 
+    @pytest.mark.current
     @allure.description("Create working package sanity test")
     def test_create_work_package_sanity(self, init_test):
         # Create new project

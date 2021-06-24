@@ -49,9 +49,17 @@ class BaseWrapper:
                           attachment_type=allure.attachment_type.PNG)
             pytest.fail(msg=toe)
 
-    def click_on_element(self, button_element: WebElement):
+    def wait_for_element_clickable(self, by: By):
         try:
-            button_element.click()
+            self.driver_wait.until(method=EC.element_to_be_clickable(by))
+        except TimeoutException as toe:
+            allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
+                          attachment_type=allure.attachment_type.PNG)
+            pytest.fail(msg=toe)
+
+    def click_on_element(self, element: WebElement):
+        try:
+            element.click()
         except ElementNotVisibleException as enve:
             allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
                           attachment_type=allure.attachment_type.PNG)
@@ -66,3 +74,6 @@ class BaseWrapper:
             allure.attach(self.driver.get_screenshot_as_png(), name="screenshot",
                           attachment_type=allure.attachment_type.PNG)
             pytest.fail(msg=e)
+
+    def click_on_element_js(self, element: WebElement):
+        self.driver.execute_script("arguments[0].click();", element)

@@ -45,7 +45,6 @@ class TestProjectCrud(BaseApiTestClass):
         AssertionWrapper.assert_not_none(project)
         AssertionWrapper.assert_equals(actual=project['description']['raw'], expected=description)
 
-    @pytest.mark.current
     @allure.description("DELETE project test")
     def test_delete_project(self):
         project = self.test_create_project()

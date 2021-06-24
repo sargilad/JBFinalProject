@@ -33,9 +33,9 @@ class NewWorkPackagePageObject(BasePageObject):
 
     @allure.step("Submit new work package form")
     def submit_new_package(self):
-        self.button_wrapper.wait_for_element_presence(self.new_work_package_page.button_save_locator)
+        self.button_wrapper.wait_for_element_visible(self.new_work_package_page.button_save_locator)
         element = self.new_work_package_page.button_save_element()
-        self.button_wrapper.click_on_element(button_element=element)
+        self.button_wrapper.click_on_element_js(element=element)
 
     @allure.step("Get work package title")
     def get_new_work_package_title(self) -> str:

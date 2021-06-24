@@ -36,4 +36,4 @@ class LoginPageObject(BasePageObject):
     def submit_form(self):
         self.button_wrapper.wait_for_element_presence(self.login_page.button_sign_in_locator)
         element = self.login_page.button_sign_in_element()
-        self.button_wrapper.click_on_element(button_element=element)
+        self.button_wrapper.click_on_element(element=element)
