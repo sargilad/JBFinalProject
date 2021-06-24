@@ -11,6 +11,7 @@ from open_project.tests.api_tests.rest.client import RestClient
 
 
 class RestRequests:
+    base_url = ''
     projects_url = ''
     work_pkg_url = ''
     rest_client = None
@@ -18,8 +19,9 @@ class RestRequests:
 
     def __init__(self, domain: str, api_token: str):
         self.rest_client = RestClient()
-        self.projects_url = domain + "api/v3/projects/"
-        self.work_pkg_url = domain + "api/v3/work_packages/"
+        self.base_url = domain + "/api/v3"
+        self.projects_url = self.base_url + "/projects/"
+        self.work_pkg_url = self.base_url + "/work_packages/"
         self.api_token = api_token
 
     @allure.step("creating new project")

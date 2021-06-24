@@ -26,7 +26,7 @@ class WorkPackagesPageObject(BasePageObject):
     def open_new_work_package_page(self, task_type: str = "TASK"):
         self.button_wrapper.wait_for_element_presence(self.work_packages_page.button_add_locator)
         element = self.work_packages_page.button_add_element()
-        self.button_wrapper.click_on_element(button_element=element)
+        self.button_wrapper.click_on_element(element=element)
 
         self.list_wrapper.wait_for_element_presence(self.work_packages_page.list_work_type_locator)
         list_element = self.work_packages_page.list_work_type_element()

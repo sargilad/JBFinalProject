@@ -1,11 +1,12 @@
 import configparser
-import os
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
 from open_project.tests.api_tests.utilities.utilities import CommonUtilities
+from open_project.tests.env import conf_def
+from open_project.tests.resources import resource_def
 from open_project.tests.ui_tests.page_objects.login_page_object import LoginPageObject
 from open_project.tests.ui_tests.page_objects.mypage_page_object import MyPagePageObject
 from open_project.tests.ui_tests.page_objects.new_project_page_object import NewProjectPageObject
@@ -34,14 +35,14 @@ class BaseUITestClass:
     @pytest.fixture()
     def init_test(self):
         self.config_parser = configparser.ConfigParser()
-        TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-        self.config_parser.read(TEST_DIR + '\\..\\..\\env\\config.ini')
+        self.config_parser.read(conf_def.CONF_DIR + '\\config.ini')
         self.domain = self.config_parser['env']['domain']
         self.username = self.config_parser['user']['username']
         self.password = self.config_parser['user']['password']
         wait_timeout = self.config_parser['env']['wait_timeout']
 
-        self.driver = webdriver.Chrome(executable_path=TEST_DIR + '\\..\\..\\resources\\chromedriver.exe')
+        self.driver = webdriver.Chrome(executable_path=resource_def.RESOURCE_DIR + '\\chromedriver.exe')
+        self.driver.maximize_window()
         self.driver_wait: WebDriverWait = WebDriverWait(driver=self.driver, timeout=int(wait_timeout))
 
         self.login_page_object = LoginPageObject(driver=self.driver, driver_wait=self.driver_wait)
