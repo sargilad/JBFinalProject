@@ -18,9 +18,9 @@ class TestProjectCrud(BaseApiTestClass):
         description = "This is the first test project"
         body = self.entities.get_project_create_body(project_name=name, description=description)
         project = self.rest_requests.create_project(body=body)
-        assert project is not None
-        assert project['name'] == name
-        assert project['identifier'] == name
+        AssertionWrapper.assert_not_none(project)
+        AssertionWrapper.assert_equals(actual=project['name'], expected=name)
+        AssertionWrapper.assert_equals(actual=project['identifier'], expected=name)
 
         return project
 
@@ -31,9 +31,9 @@ class TestProjectCrud(BaseApiTestClass):
         description = project['description']['raw']
 
         project = self.rest_requests.get_single_project(id=project['id'])
-        assert project is not None
-        assert project['name'] == name
-        assert project['description']['raw'] == description
+        AssertionWrapper.assert_not_none(project)
+        AssertionWrapper.assert_equals(actual=project['name'], expected=name)
+        AssertionWrapper.assert_equals(actual=project['description']['raw'], expected=description)
 
     @allure.description("UPDATE project test")
     def test_update_project(self):
@@ -42,8 +42,8 @@ class TestProjectCrud(BaseApiTestClass):
         description = "Updated description"
         body = self.entities.get_project_update_body(description=description)
         project = self.rest_requests.update_project(id=project['id'], body=body)
-        assert project is not None
-        assert project['description']['raw'] == description
+        AssertionWrapper.assert_not_none(project)
+        AssertionWrapper.assert_equals(actual=project['description']['raw'], expected=description)
 
     @pytest.mark.current
     @allure.description("DELETE project test")
@@ -51,13 +51,13 @@ class TestProjectCrud(BaseApiTestClass):
         project = self.test_create_project()
 
         status = self.rest_requests.delete_project(id=project['id'], body={})
-        assert status == HTTPStatus.NO_CONTENT
         AssertionWrapper.assert_equals(actual=status, expected=HTTPStatus.NO_CONTENT)
 
         project = self.rest_requests.get_single_project(id=project['id'], expected_status=HTTPStatus.NOT_FOUND,
                                                         attempts=5)
-        assert project is not None
+        AssertionWrapper.assert_not_none(project)
         AssertionWrapper.assert_equals(actual=project, expected={})
+
 
 @pytest.mark.workpkg_sanity
 class TestWorkPkg(BaseApiTestClass):
@@ -72,8 +72,8 @@ class TestWorkPkg(BaseApiTestClass):
                                                           project_ref=project['_links']['self']['href'],
                                                           pkg_type="/api/v3/types/1")
         pkg = self.rest_requests.create_work_package(body=body)
-        assert pkg is not None
-        assert pkg['subject'] == pkg_name
+        AssertionWrapper.assert_not_none(pkg)
+        AssertionWrapper.assert_equals(actual=pkg['subject'], expected=pkg_name)
 
         return pkg
 
@@ -83,9 +83,9 @@ class TestWorkPkg(BaseApiTestClass):
         pkg_name = pkg['subject']
 
         pkg = self.rest_requests.get_work_package(id=pkg['id'])
-        assert pkg is not None
-        assert pkg['_links']['type']['title'] == 'Task'
-        assert pkg['subject'] == pkg_name
+        AssertionWrapper.assert_not_none(pkg)
+        AssertionWrapper.assert_equals(actual=pkg['_links']['type']['title'], expected='Task')
+        AssertionWrapper.assert_equals(actual=pkg['subject'], expected=pkg_name)
 
     @allure.description("UPDATE work package test")
     def test_update_work_package(self):
@@ -95,7 +95,7 @@ class TestWorkPkg(BaseApiTestClass):
         package_description = "Package description updated"
         body = self.entities.get_work_package_update_body(lock_version=lock_version, description=package_description)
         pkg = self.rest_requests.update_work_package(id=pkg['id'], body=body)
-        assert pkg is not None
+        AssertionWrapper.assert_not_none(pkg)
         assert pkg['description']['raw'] == package_description
 
     @allure.description("DELETE work package test")
@@ -103,8 +103,8 @@ class TestWorkPkg(BaseApiTestClass):
         pkg = self.test_create_work_package()
 
         status = self.rest_requests.delete_work_package(id=pkg['id'])
-        assert status == HTTPStatus.NO_CONTENT
+        AssertionWrapper.assert_equals(actual=status, expected=HTTPStatus.NO_CONTENT)
 
         pkg = self.rest_requests.get_work_package(id=pkg['id'])
-        assert pkg is not None
-        assert pkg == {}
+        AssertionWrapper.assert_not_none(pkg)
+        AssertionWrapper.assert_equals(actual=pkg, expected={})
