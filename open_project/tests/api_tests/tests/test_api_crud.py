@@ -52,7 +52,7 @@ class TestProjectCrud(BaseApiTestClass):
         assert status == HTTPStatus.NO_CONTENT
 
         project = self.rest_requests.get_single_project(id=project['id'], expected_status=HTTPStatus.NOT_FOUND,
-                                                           attempts=5)
+                                                        attempts=5)
         assert project is not None
         assert project == {}
 
@@ -67,8 +67,8 @@ class TestWorkPkg(BaseApiTestClass):
 
         pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
         body = self.entities.get_create_work_package_body(pkg_name=pkg_name,
-                                                             project_ref=project['_links']['self']['href'],
-                                                             pkg_type="/api/v3/types/1")
+                                                          project_ref=project['_links']['self']['href'],
+                                                          pkg_type="/api/v3/types/1")
         pkg = self.rest_requests.create_work_package(body=body)
         assert pkg is not None
         assert pkg['subject'] == pkg_name
