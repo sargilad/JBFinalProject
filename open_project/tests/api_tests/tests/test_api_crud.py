@@ -6,6 +6,7 @@ import pytest
 from allure_commons.types import Severity
 
 from open_project.tests.api_tests.tests.test_api_base import BaseApiTestClass
+from open_project.tests.api_tests.utilities.common_wrappers import AssertionWrapper
 
 
 @pytest.mark.proj_sanity
@@ -44,18 +45,19 @@ class TestProjectCrud(BaseApiTestClass):
         assert project is not None
         assert project['description']['raw'] == description
 
+    @pytest.mark.current
     @allure.description("DELETE project test")
     def test_delete_project(self):
         project = self.test_create_project()
 
         status = self.rest_requests.delete_project(id=project['id'], body={})
         assert status == HTTPStatus.NO_CONTENT
+        AssertionWrapper.assert_equals(actual=status, expected=HTTPStatus.NO_CONTENT)
 
         project = self.rest_requests.get_single_project(id=project['id'], expected_status=HTTPStatus.NOT_FOUND,
                                                         attempts=5)
         assert project is not None
-        assert project == {}
-
+        AssertionWrapper.assert_equals(actual=project, expected={})
 
 @pytest.mark.workpkg_sanity
 class TestWorkPkg(BaseApiTestClass):
