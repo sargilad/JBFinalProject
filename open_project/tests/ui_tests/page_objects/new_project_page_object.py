@@ -49,6 +49,6 @@ class NewProjectPageObject(BasePageObject):
 
     @allure.step("Submit new project form")
     def submit_new_project(self):
-        self.button_wrapper.wait_for_element_presence(self.new_project_page.button_save_locator)
+        self.button_wrapper.wait_for_element_visible(self.new_project_page.button_save_locator)
         element = self.new_project_page.button_save_element()
         self.button_wrapper.click_on_element(button_element=element)

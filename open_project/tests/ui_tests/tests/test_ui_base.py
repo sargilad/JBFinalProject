@@ -42,6 +42,7 @@ class BaseUITestClass:
         wait_timeout = self.config_parser['env']['wait_timeout']
 
         self.driver = webdriver.Chrome(executable_path=resource_def.RESOURCE_DIR + '\\chromedriver.exe')
+        self.driver.maximize_window()
         self.driver_wait: WebDriverWait = WebDriverWait(driver=self.driver, timeout=int(wait_timeout))
 
         self.login_page_object = LoginPageObject(driver=self.driver, driver_wait=self.driver_wait)
