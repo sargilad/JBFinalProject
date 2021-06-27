@@ -1,11 +1,10 @@
 import time
 from enum import Enum
 from http import HTTPStatus
-
 import json
-
 import allure
 import pytest
+from requests.auth import HTTPBasicAuth
 
 from open_project.tests.api_tests.rest.client import RestClient
 
@@ -14,15 +13,15 @@ class RestRequests:
     base_url = ''
     projects_url = ''
     work_pkg_url = ''
-    rest_client = None
-    api_token = ''
+    rest_client: RestClient
+    basic_auth: HTTPBasicAuth
 
-    def __init__(self, domain: str, api_token: str):
-        self.rest_client = RestClient()
+    def __init__(self, domain: str, basic_auth: HTTPBasicAuth):
+        self.rest_client = RestClient(basic_auth)
         self.base_url = domain + "/api/v3"
         self.projects_url = self.base_url + "/projects/"
         self.work_pkg_url = self.base_url + "/work_packages/"
-        self.api_token = api_token
+        self.basic_auth = basic_auth
 
     @allure.step("creating new project")
     def create_project(self, body) -> json:
@@ -37,12 +36,12 @@ class RestRequests:
             pytest.raises(e)
 
     @allure.step("querying project")
-    def get_single_project(self, id: int, expected_status: int = HTTPStatus.OK, attempts: int = 1) -> json:
+    def get_single_project(self, proj_id: int, expected_status: int = HTTPStatus.OK, attempts: int = 1) -> json:
         try:
             response = None
             attempt = 1
             while attempt <= attempts:
-                response = self.rest_client.get(url=self.projects_url + str(id),
+                response = self.rest_client.get(url=self.projects_url + str(proj_id),
                                                 headers_list=self._build_request_header())
                 if response.status_code == expected_status:
                     break
@@ -55,16 +54,16 @@ class RestRequests:
                 print(f"project GET: {response.json()}")
                 return response.json()
             elif response.status_code == HTTPStatus.NOT_FOUND:
-                print(f"Project id {id} not found")
+                print(f"Project id {proj_id} not found")
                 return {}
             raise Exception("Failed to GET project")
         except Exception as e:
             pytest.raises(e)
 
     @allure.step("updating project")
-    def update_project(self, id, body):
+    def update_project(self, proj_id, body):
         try:
-            response = self.rest_client.patch(url=self.projects_url + str(id), body=body,
+            response = self.rest_client.patch(url=self.projects_url + str(proj_id), body=body,
                                               headers_list=self._build_request_header())
             if response.status_code == HTTPStatus.OK:
                 print(f"project PATCH: {response.json()}")
@@ -74,9 +73,9 @@ class RestRequests:
             pytest.raises(e)
 
     @allure.step("deleting project")
-    def delete_project(self, id, body) -> int:
+    def delete_project(self, proj_id, body) -> int:
         try:
-            response = self.rest_client.delete(url=self.projects_url + str(id), body=body,
+            response = self.rest_client.delete(url=self.projects_url + str(proj_id), body=body,
                                                headers_list=self._build_request_header())
             if response.status_code == HTTPStatus.NO_CONTENT:
                 print(f"project deleted")
@@ -98,23 +97,23 @@ class RestRequests:
             pytest.raises(e)
 
     @allure.step("querying work package")
-    def get_work_package(self, id: int) -> json:
+    def get_work_package(self, pkg_id: int) -> json:
         try:
-            response = self.rest_client.get(url=self.work_pkg_url + str(id), headers_list=self._build_request_header())
+            response = self.rest_client.get(url=self.work_pkg_url + str(pkg_id), headers_list=self._build_request_header())
             if response.status_code == HTTPStatus.OK:
                 print(f"package GET: {response.json()}")
                 return response.json()
             elif response.status_code == HTTPStatus.NOT_FOUND:
-                print(f"package id {id} not found")
+                print(f"package id {pkg_id} not found")
                 return {}
             raise Exception("Failed to GET package")
         except Exception as e:
             pytest.raises(e)
 
     @allure.step("updating work package")
-    def update_work_package(self, id, body):
+    def update_work_package(self, pkg_id, body):
         try:
-            response = self.rest_client.patch(url=self.work_pkg_url + str(id), body=body,
+            response = self.rest_client.patch(url=self.work_pkg_url + str(pkg_id), body=body,
                                               headers_list=self._build_request_header())
             if response.status_code == HTTPStatus.OK:
                 print(f"package PATCH: {response.json()}")
@@ -124,9 +123,9 @@ class RestRequests:
             pytest.raises(e)
 
     @allure.step("deleting work package")
-    def delete_work_package(self, id: int, body: dict = {}) -> int:
+    def delete_work_package(self, pkg_id: int, body: dict = {}) -> int:
         try:
-            response = self.rest_client.delete(url=self.work_pkg_url + str(id), body=body,
+            response = self.rest_client.delete(url=self.work_pkg_url + str(pkg_id), body=body,
                                                headers_list=self._build_request_header())
             if response.status_code == HTTPStatus.NO_CONTENT:
                 print(f"Work package deleted")
@@ -136,8 +135,7 @@ class RestRequests:
             pytest.raises(e)
 
     def _build_request_header(self) -> dict:
-        return {self._HeadersEnum.AUTHORIZATION.value: 'Basic ' + self.api_token,
-                self._HeadersEnum.CONTENT_TYPE.value: self._HeadersEnum.APPLICATION_JSON.value}
+        return {self._HeadersEnum.CONTENT_TYPE.value: self._HeadersEnum.APPLICATION_JSON.value}
 
     class _HeadersEnum(Enum):
         CONTENT_TYPE = 'Content-type'

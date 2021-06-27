@@ -30,7 +30,7 @@ class TestProjectCrud(BaseApiTestClass):
         name = project['name']
         description = project['description']['raw']
 
-        project = self.rest_requests.get_single_project(id=project['id'])
+        project = self.rest_requests.get_single_project(proj_id=project['id'])
         AssertionWrapper.assert_not_none(project)
         AssertionWrapper.assert_equals(actual=project['name'], expected=name)
         AssertionWrapper.assert_equals(actual=project['description']['raw'], expected=description)
@@ -41,7 +41,7 @@ class TestProjectCrud(BaseApiTestClass):
 
         description = "Updated description"
         body = self.entities.get_project_update_body(description=description)
-        project = self.rest_requests.update_project(id=project['id'], body=body)
+        project = self.rest_requests.update_project(proj_id=project['id'], body=body)
         AssertionWrapper.assert_not_none(project)
         AssertionWrapper.assert_equals(actual=project['description']['raw'], expected=description)
 
@@ -49,10 +49,10 @@ class TestProjectCrud(BaseApiTestClass):
     def test_delete_project(self):
         project = self.test_create_project()
 
-        status = self.rest_requests.delete_project(id=project['id'], body={})
+        status = self.rest_requests.delete_project(proj_id=project['id'], body={})
         AssertionWrapper.assert_equals(actual=status, expected=HTTPStatus.NO_CONTENT)
 
-        project = self.rest_requests.get_single_project(id=project['id'], expected_status=HTTPStatus.NOT_FOUND,
+        project = self.rest_requests.get_single_project(proj_id=project['id'], expected_status=HTTPStatus.NOT_FOUND,
                                                         attempts=5)
         AssertionWrapper.assert_not_none(project)
         AssertionWrapper.assert_equals(actual=project, expected={})
@@ -81,7 +81,7 @@ class TestWorkPkg(BaseApiTestClass):
         pkg = self.test_create_work_package()
         pkg_name = pkg['subject']
 
-        pkg = self.rest_requests.get_work_package(id=pkg['id'])
+        pkg = self.rest_requests.get_work_package(pkg_id=pkg['id'])
         AssertionWrapper.assert_not_none(pkg)
         AssertionWrapper.assert_equals(actual=pkg['_links']['type']['title'], expected='Task')
         AssertionWrapper.assert_equals(actual=pkg['subject'], expected=pkg_name)
@@ -93,7 +93,7 @@ class TestWorkPkg(BaseApiTestClass):
         lock_version = pkg['lockVersion']
         package_description = "Package description updated"
         body = self.entities.get_work_package_update_body(lock_version=lock_version, description=package_description)
-        pkg = self.rest_requests.update_work_package(id=pkg['id'], body=body)
+        pkg = self.rest_requests.update_work_package(pkg_id=pkg['id'], body=body)
         AssertionWrapper.assert_not_none(pkg)
         assert pkg['description']['raw'] == package_description
 
@@ -101,9 +101,9 @@ class TestWorkPkg(BaseApiTestClass):
     def test_delete_work_package(self):
         pkg = self.test_create_work_package()
 
-        status = self.rest_requests.delete_work_package(id=pkg['id'])
+        status = self.rest_requests.delete_work_package(pkg_id=pkg['id'])
         AssertionWrapper.assert_equals(actual=status, expected=HTTPStatus.NO_CONTENT)
 
-        pkg = self.rest_requests.get_work_package(id=pkg['id'])
+        pkg = self.rest_requests.get_work_package(pkg_id=pkg['id'])
         AssertionWrapper.assert_not_none(pkg)
         AssertionWrapper.assert_equals(actual=pkg, expected={})
