@@ -78,10 +78,8 @@ class TestProjectCrud(BaseApiTestClass):
 
 @pytest.mark.workpkg_sanity
 class TestWorkPkg(BaseApiTestClass):
-    test_project_crud_tests = TestProjectCrud()
-
     @allure.description("CREATE work package test")
-    def test_create_work_package(self) -> json:
+    def test_create_work_package(self):
         name = self.common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
         response = TestFlows.create_project(self, name, description)
@@ -89,21 +87,28 @@ class TestWorkPkg(BaseApiTestClass):
         project = response.json()
 
         pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
-        body = self.entities.get_create_work_package_body(pkg_name=pkg_name,
-                                                          project_ref=project['_links']['self']['href'],
-                                                          pkg_type="/api/v3/types/1")
-        response = self.rest_requests.create_work_package(body=body)
+        response = TestFlows.create_work_package(self, pkg_name=pkg_name, project_ref=project['_links']['self']['href'],
+                                                 pkg_type="/api/v3/types/1")
         AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.CREATED)
 
         pkg = response.json()
         AssertionWrapper.assert_not_none(pkg)
         AssertionWrapper.assert_equals(actual=pkg['subject'], expected=pkg_name)
 
-        return pkg
-
     @allure.description("GET work package test")
     def test_get_work_package(self):
-        pkg = self.test_create_work_package()
+        name = self.common_utilities.get_random_string(prefix="proj-")
+        description = "This is the first test project"
+        response = TestFlows.create_project(self, name, description)
+        AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
+        project = response.json()
+
+        pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
+        response = TestFlows.create_work_package(self, pkg_name, project_ref=project['_links']['self']['href'],
+                                                 pkg_type="/api/v3/types/1")
+        AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.CREATED)
+
+        pkg = response.json()
         pkg_name = pkg['subject']
 
         response = self.rest_requests.get_work_package(pkg_id=pkg['id'])
@@ -116,7 +121,18 @@ class TestWorkPkg(BaseApiTestClass):
 
     @allure.description("UPDATE work package test")
     def test_update_work_package(self):
-        pkg = self.test_create_work_package()
+        name = self.common_utilities.get_random_string(prefix="proj-")
+        description = "This is the first test project"
+        response = TestFlows.create_project(self, name, description)
+        AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
+        project = response.json()
+
+        pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
+        response = TestFlows.create_work_package(self, pkg_name, project_ref=project['_links']['self']['href'],
+                                                 pkg_type="/api/v3/types/1")
+        AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.CREATED)
+
+        pkg = response.json()
 
         lock_version = pkg['lockVersion']
         package_description = "Package description updated"
@@ -130,7 +146,18 @@ class TestWorkPkg(BaseApiTestClass):
 
     @allure.description("DELETE work package test")
     def test_delete_work_package(self):
-        pkg = self.test_create_work_package()
+        name = self.common_utilities.get_random_string(prefix="proj-")
+        description = "This is the first test project"
+        response = TestFlows.create_project(self, name, description)
+        AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
+        project = response.json()
+
+        pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
+        response = TestFlows.create_work_package(self, pkg_name, project_ref=project['_links']['self']['href'],
+                                                 pkg_type="/api/v3/types/1")
+        AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.CREATED)
+
+        pkg = response.json()
 
         response = self.rest_requests.delete_work_package(pkg_id=pkg['id'])
         AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.NO_CONTENT)
