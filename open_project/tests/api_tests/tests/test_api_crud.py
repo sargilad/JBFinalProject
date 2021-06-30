@@ -63,7 +63,7 @@ class TestProjectCrud(BaseApiTestClass):
     def test_delete_project(self):
         name = self.common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
-        response = TestFlows.create_project(self, name, description)
+        response = TestFlows.create_project(self, name=name, description=description)
         AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
         project = response.json()
 
@@ -81,7 +81,7 @@ class TestWorkPkg(BaseApiTestClass):
     def test_create_work_package(self):
         name = self.common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
-        response = TestFlows.create_project(self, name, description)
+        response = TestFlows.create_project(self, name=name, description=description)
         AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
         project = response.json()
 
@@ -98,12 +98,12 @@ class TestWorkPkg(BaseApiTestClass):
     def test_get_work_package(self):
         name = self.common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
-        response = TestFlows.create_project(self, name, description)
+        response = TestFlows.create_project(self, name=name, description=description)
         AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
         project = response.json()
 
         pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
-        response = TestFlows.create_work_package(self, pkg_name, project_ref=project['_links']['self']['href'],
+        response = TestFlows.create_work_package(self, pkg_name=pkg_name, project_ref=project['_links']['self']['href'],
                                                  pkg_type="/api/v3/types/1")
         AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.CREATED)
 
@@ -122,12 +122,12 @@ class TestWorkPkg(BaseApiTestClass):
     def test_update_work_package(self):
         name = self.common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
-        response = TestFlows.create_project(self, name, description)
+        response = TestFlows.create_project(self, name=name, description=description)
         AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
         project = response.json()
 
         pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
-        response = TestFlows.create_work_package(self, pkg_name, project_ref=project['_links']['self']['href'],
+        response = TestFlows.create_work_package(self, pkg_name=pkg_name, project_ref=project['_links']['self']['href'],
                                                  pkg_type="/api/v3/types/1")
         AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.CREATED)
 
@@ -147,12 +147,12 @@ class TestWorkPkg(BaseApiTestClass):
     def test_delete_work_package(self):
         name = self.common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
-        response = TestFlows.create_project(self, name, description)
+        response = TestFlows.create_project(self, name=name, description=description)
         AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
         project = response.json()
 
         pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
-        response = TestFlows.create_work_package(self, pkg_name, project_ref=project['_links']['self']['href'],
+        response = TestFlows.create_work_package(self, pkg_name=pkg_name, project_ref=project['_links']['self']['href'],
                                                  pkg_type="/api/v3/types/1")
         AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.CREATED)
 
