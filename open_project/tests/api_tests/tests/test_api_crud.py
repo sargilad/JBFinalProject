@@ -6,6 +6,7 @@ import pytest
 from allure_commons.types import Severity
 
 from open_project.tests.api_tests.tests.test_api_base import BaseApiTestClass
+from open_project.tests.api_tests.tests.test_flows import TestFlows
 from open_project.tests.api_tests.utilities.common_wrappers import AssertionWrapper
 
 
@@ -13,11 +14,10 @@ from open_project.tests.api_tests.utilities.common_wrappers import AssertionWrap
 @allure.severity(severity_level=Severity.CRITICAL)
 class TestProjectCrud(BaseApiTestClass):
     @allure.description("CREATE project test")
-    def test_create_project(self) -> json:
+    def test_create_project(self):
         name = self.common_utilities.get_random_string(prefix="proj-")
         description = "This is the first test project"
-        body = self.entities.get_project_create_body(project_name=name, description=description)
-        response = self.rest_requests.create_project(body=body)
+        response = TestFlows.create_project(self, name, description)
         AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
 
         project = response.json()
@@ -25,11 +25,13 @@ class TestProjectCrud(BaseApiTestClass):
         AssertionWrapper.assert_equals(actual=project['name'], expected=name)
         AssertionWrapper.assert_equals(actual=project['identifier'], expected=name)
 
-        return project
-
     @allure.description("GET project test")
     def test_get_project(self):
-        project = self.test_create_project()
+        name = self.common_utilities.get_random_string(prefix="proj-")
+        description = "This is the first test project"
+        response = TestFlows.create_project(self, name, description)
+        AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
+        project = response.json()
         name = project['name']
         description = project['description']['raw']
 
@@ -43,7 +45,11 @@ class TestProjectCrud(BaseApiTestClass):
 
     @allure.description("UPDATE project test")
     def test_update_project(self):
-        project = self.test_create_project()
+        name = self.common_utilities.get_random_string(prefix="proj-")
+        description = "This is the first test project"
+        response = TestFlows.create_project(self, name, description)
+        AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
+        project = response.json()
 
         description = "Updated description"
         body = self.entities.get_project_update_body(description=description)
@@ -56,7 +62,11 @@ class TestProjectCrud(BaseApiTestClass):
 
     @allure.description("DELETE project test")
     def test_delete_project(self):
-        project = self.test_create_project()
+        name = self.common_utilities.get_random_string(prefix="proj-")
+        description = "This is the first test project"
+        response = TestFlows.create_project(self, name, description)
+        AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
+        project = response.json()
 
         response = self.rest_requests.delete_project(proj_id=project['id'], body={})
         AssertionWrapper.assert_equals(actual=response.status_code, expected=HTTPStatus.NO_CONTENT)
@@ -72,7 +82,11 @@ class TestWorkPkg(BaseApiTestClass):
 
     @allure.description("CREATE work package test")
     def test_create_work_package(self) -> json:
-        project = self.test_project_crud_tests.test_create_project()
+        name = self.common_utilities.get_random_string(prefix="proj-")
+        description = "This is the first test project"
+        response = TestFlows.create_project(self, name, description)
+        AssertionWrapper.assert_equals(response.status_code, HTTPStatus.CREATED)
+        project = response.json()
 
         pkg_name = self.common_utilities.get_random_string(prefix="pkg_")
         body = self.entities.get_create_work_package_body(pkg_name=pkg_name,
